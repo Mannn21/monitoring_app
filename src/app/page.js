@@ -1,34 +1,62 @@
-"use client"
+"use client";
+import {useState, useEffect} from "react"
+import { AiOutlineGoogle } from "react-icons/ai";
+import { BiLogoFacebook } from "react-icons/bi";
 
-import {AiOutlineGoogle} from "react-icons/ai"
-import {BiLogoFacebook} from "react-icons/bi"
-import {Button} from "react-bootstrap"
+import { auth, googleProvider, facebookProvider } from "./firebase.js";
+import {
+	getAuth,
+	signInWithPopup,
+	signInWithRedirect,
+	getRedirectResult,
+	GoogleAuthProvider,
+	FacebookAuthProvider,
+} from "firebase/auth";
 
-import { auth, googleProvider, facebookProvider } from "./firebase.js"
-import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+export default function Home() {
+  const [user, setUser] = useState({})
+  const [token, setToken] = useState(null)
+	const handleFacebook = () => {
+		signInWithPopup(auth, facebookProvider).then(result => {
+			const credential = FacebookAuthProvider.credentialFromResult(result);
+			const accessToken = credential.accessToken;
+			console.log(result);
+		});
+	};
 
-export default function Home () {
-  const handleFacebook = () => {
-    signInWithPopup(auth, facebookProvider)
-    .then(result => {
-      const user = result.user
-      const credential = FacebookAuthProvider.credentialFromResult(result)
-      const accessToken = credential.accessToken
-    })
-  }
+	const handleGoogle = () => {
+    signInWithRedirect(auth, googleProvider);
+  };
   
-  return (
-    <div>
-      <div>
-        <Button>
-          <AiOutlineGoogle />
-          <span>Login With Google</span>
-        </Button>
-        <Button>
-          <BiLogoFacebook />
-          <span>Login With Facebook</span>
-        </Button>
-      </div>
-    </div>
-  )
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(result => {
+        if (result) {
+        //   const credential = GoogleAuthProvider.credentialFromResult(result);
+        //   setToken(credential.accessToken);
+        //   setUser(result.user);
+        //   console.log({user, token})
+		console.log(result.user);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [user, token]);
+
+
+	return (
+		<div>
+			<div>
+				<div onClick={() => handleGoogle()}>
+					<AiOutlineGoogle />
+					<span>Login With Google</span>
+				</div>
+				<div onClick={() => handleFacebook()}>
+					<BiLogoFacebook />
+					<span>Login With Facebook</span>
+				</div>
+			</div>
+		</div>
+	);
 }
