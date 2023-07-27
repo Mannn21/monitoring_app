@@ -1,49 +1,39 @@
 "use client";
-import {useState, useEffect} from "react"
+import { useEffect } from "react";
 import { AiOutlineGoogle } from "react-icons/ai";
-import { BiLogoFacebook } from "react-icons/bi";
-
-import { auth, googleProvider, facebookProvider } from "./firebase.js";
+import { auth, googleProvider } from "./firebase.js";
+import { logIn, logOut } from "@/redux/authSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 import {
-	getAuth,
-	signInWithPopup,
 	signInWithRedirect,
 	getRedirectResult,
-	GoogleAuthProvider,
-	FacebookAuthProvider,
 } from "firebase/auth";
 
 export default function Home() {
-  const [user, setUser] = useState({})
-  const [token, setToken] = useState(null)
-	const handleFacebook = () => {
-		signInWithPopup(auth, facebookProvider).then(result => {
-			const credential = FacebookAuthProvider.credentialFromResult(result);
-			const accessToken = credential.accessToken;
-			console.log(result);
-		});
-	};
+	const dispatch = useDispatch();
+	const username = useSelector(state => state.authReducer.value.username);
+	const email = useSelector(state => state.authReducer.value.email);
 
 	const handleGoogle = () => {
-    signInWithRedirect(auth, googleProvider);
-  };
-  
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then(result => {
-        if (result) {
-        //   const credential = GoogleAuthProvider.credentialFromResult(result);
-        //   setToken(credential.accessToken);
-        //   setUser(result.user);
-        //   console.log({user, token})
-		console.log(result.user);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, [user, token]);
+		signInWithRedirect(auth, googleProvider);
+	};
 
+	useEffect(() => {
+		getRedirectResult(auth)
+			.then(result => {
+				if (result) {
+					const data = {
+						username: result.user.displayName,
+						email: result.user.email,
+						uid: result.user.auth.currentUser.uid,
+					};
+					dispatch(logIn(data));
+				}
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}, [dispatch]);
 
 	return (
 		<div>
@@ -52,9 +42,9 @@ export default function Home() {
 					<AiOutlineGoogle />
 					<span>Login With Google</span>
 				</div>
-				<div onClick={() => handleFacebook()}>
-					<BiLogoFacebook />
-					<span>Login With Facebook</span>
+				<div>
+					<span>{username} sudah login</span>
+					<span>{email} emailnya</span>
 				</div>
 			</div>
 		</div>

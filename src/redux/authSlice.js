@@ -1,31 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState } from "./store";
-import { HYDRATE } from "next-redux-wrapper";
 
 const initialState = {
-	authState: false,
+	value: {
+		isAuth: false,
+		username: "",
+		email: "",
+		uid: null,
+		isAdmin: false,
+	},
 };
 
-export const authSlice = createSlice({
+export const auth = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
-		setAuthState(state, action) {
-			state.authState = action.payload;
-		},
-	},
-	extraReducers: {
-		[HYDRATE]: (state, action) => {
+		logIn: (state, action) => {
 			return {
-				...state,
-				...action.payload.auth,
+				value: {
+					isAuth: true,
+					username: action.payload.username,
+					email: action.payload.email,
+					uid: action.payload.uid,
+					isAdmin: false,
+				},
 			};
+		},
+		logOut: () => {
+			return initialState;
 		},
 	},
 });
 
-export const { setAuthState } = authSlice.actions;
-
-export const selectAuthState = state => state.auth.authState;
-
-export default authSlice.reducer;
+export const { logIn, logOut } = auth.actions;
+export default auth.reducer;

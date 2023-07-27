@@ -1,9 +1,6 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-import "bootstrap/dist/css/bootstrap.css";
-import { wrapper } from "@/redux/store";
-
-const inter = Inter({ subsets: ["latin"] });
+import "bootstrap/dist/css/bootstrap.min.css";
+import { ReduxProvider } from "@/redux/provider";
+import SSRProvider from "react-bootstrap/SSRProvider";
 
 export const metadata = {
 	title: "Molitics Apps",
@@ -13,14 +10,12 @@ export const metadata = {
 	},
 };
 
-function RootLayout({ children }) {
+export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
-			<body className={inter.className} suppressHydrationWarning={true}>
-				{children}
+			<body suppressHydrationWarning={true}>
+				<ReduxProvider>{children}</ReduxProvider>
 			</body>
 		</html>
 	);
 }
-
-export default wrapper.withRedux(RootLayout);
