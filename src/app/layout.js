@@ -1,6 +1,5 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import StyledComponentsRegistry from "@/lib/antRegistry";
 import { ReduxProvider } from "@/redux/provider";
-import SSRProvider from "react-bootstrap/SSRProvider";
 
 export const metadata = {
 	title: "Molitics Apps",
@@ -14,7 +13,9 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body suppressHydrationWarning={true}>
-				<ReduxProvider>{children}</ReduxProvider>
+				<ReduxProvider>
+					<StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+				</ReduxProvider>
 			</body>
 		</html>
 	);
