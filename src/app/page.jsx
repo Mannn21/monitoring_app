@@ -1,41 +1,20 @@
 "use client";
+import { useRouter } from "next/navigation.js";
+import Link from "next/link.js";
 import { useEffect } from "react";
-import { Button, Input, Form } from "antd";
-import {
-	GoogleOutlined,
-	EyeTwoTone,
-	EyeInvisibleOutlined,
-} from "@ant-design/icons";
 import { auth, googleProvider, db } from "./firebase.js";
-import { logIn, logOut } from "@/redux/authSlice.js";
-import { doc, setDoc, deleteDoc } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
-import { signInWithRedirect, getRedirectResult, signOut } from "firebase/auth";
-import { Container, Wrapper } from "../styles/index.global.js";
+import { logIn } from "@/redux/authSlice.js";
+import { doc, setDoc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { signInWithRedirect, getRedirectResult } from "firebase/auth";
+import styled from "./page.module.css";
 
 export default function Home() {
 	const dispatch = useDispatch();
-	const username = useSelector(state => state.authReducer.value.username);
-	const email = useSelector(state => state.authReducer.value.email);
-	const uid = useSelector(state => state.authReducer.value.uid);
+	const router = useRouter();
 
 	const handleGoogle = () => {
 		signInWithRedirect(auth, googleProvider);
-	};
-
-	const logout = async uid => {
-		await deleteDoc(doc(db, "login", uid));
-	};
-
-	const handleLogout = uid => {
-		logout(uid);
-		signOut(auth)
-			.then(() => {
-				dispatch(logOut());
-			})
-			.catch(error => {
-				console.log(error);
-			});
 	};
 
 	const createLogin = async (uid, name, email, exp, refreshToken) => {
@@ -68,81 +47,53 @@ export default function Home() {
 						data.expToken,
 						data.refreshToken
 					)
-						.then(() => console.log("Berhasil"))
+						.then(() => router.push("/dashboard"))
 						.catch(error => console.log(error));
 				}
 			})
 			.catch(error => {
 				console.error(error);
 			});
-	}, [dispatch]);
+	}, [dispatch, router]);
 
 	return (
-		<Container>
-			<Wrapper>
-				<div>
-					<Form
-						name="basic"
-						labelCol={{
-							span: 8,
-						}}
-						wrapperCol={{
-							span: 16,
-						}}
-						style={{
-							maxWidth: 600,
-						}}
-						initialValues={{
-							remember: true,
-						}}
-						autoComplete="off">
-						<h1>Login Page</h1>
-						<Form.Item
-							label="Username"
-							name="username"
-							rules={[
-								{
-									required: true,
-									message: "Please input your username!",
-								},
-							]}>
-							<Input />
-						</Form.Item>
-
-						<Form.Item
-							label="Password"
-							name="password"
-							rules={[
-								{
-									required: true,
-									message: "Please input your password!",
-								},
-							]}>
-							<Input.Password
-								placeholder="input password"
-								iconRender={visible =>
-									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-								}
-							/>
-						</Form.Item>
-						<Form.Item
-							wrapperCol={{
-								offset: 8,
-								span: 16,
-							}}>
-							<Button type="primary" htmlType="submit">
-								Submit
-							</Button>
-						</Form.Item>
-					</Form>
-					<div onClick={() => handleGoogle()}>
-						<span>Or</span>
-						<Button type="primary" icon={<GoogleOutlined />}>
-							Login With Google
-						</Button>
+		<div className={styled.container}>
+			<div className={styled.wrapper}>
+				<div className={styled.headerWrapper}>
+					<h1 className={styled.header}>Login</h1>
+					<span className={styled.span}>Login to see your dashboard</span>
+				</div>
+				<div className={styled.inputContainer}>
+					<div className={styled.inputWrapper}>
+						<label htmlFor="" className={styled.label}>Email</label>
+						<input
+							type="email"
+							placeholder="Input your email"
+							className={styled.input}
+						/>
+					</div>
+					<div className={styled.inputWrapper}>
+						<label htmlFor="" className={styled.label}>Password</label>
+						<input
+							type="password"
+							placeholder="*****"
+							className={styled.input}
+						/>
+					</div>
+					<div className={styled.submitWrapper}>
+						<button className={styled.submit} onClick={() => handleGoogle()}>Submit</button>
 					</div>
 				</div>
-			</Wrapper>
-		</Container>
+				<div className={styled.submitWrapper}>
+					<button className={styled.google}>Sign In With Google</button>
+				</div>
+				<div className={styled.registerWrapper}>
+					<span className={styled.span}>Do Not Have an Account ?</span>
+					<button className={styled.register}>
+						<Link href="/register" className={styled.link}>Sign Up</Link>
+					</button>
+				</div>
+			</div>
+		</div>
 	);
 }
