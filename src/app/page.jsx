@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation.js";
 import Link from "next/link.js";
+import { AiOutlineGoogle } from "react-icons/ai";
 import { useEffect } from "react";
 import { auth, googleProvider, db } from "./firebase.js";
 import { logIn } from "@/redux/authSlice.js";
@@ -65,7 +66,9 @@ export default function Home() {
 				</div>
 				<div className={styled.inputContainer}>
 					<div className={styled.inputWrapper}>
-						<label htmlFor="" className={styled.label}>Email</label>
+						<label htmlFor="" className={styled.label}>
+							Email
+						</label>
 						<input
 							type="email"
 							placeholder="Input your email"
@@ -73,7 +76,9 @@ export default function Home() {
 						/>
 					</div>
 					<div className={styled.inputWrapper}>
-						<label htmlFor="" className={styled.label}>Password</label>
+						<label htmlFor="" className={styled.label}>
+							Password
+						</label>
 						<input
 							type="password"
 							placeholder="*****"
@@ -81,17 +86,21 @@ export default function Home() {
 						/>
 					</div>
 					<div className={styled.submitWrapper}>
-						<button className={styled.submit} onClick={() => handleGoogle()}>Submit</button>
+						<button className={styled.submit} onClick={() => handleGoogle()}>
+							Submit
+						</button>
 					</div>
 				</div>
 				<div className={styled.submitWrapper}>
-					<button className={styled.google}>Sign In With Google</button>
+					<button className={styled.google}>
+						<AiOutlineGoogle size={25} /> Sign In With Google
+					</button>
 				</div>
 				<div className={styled.registerWrapper}>
 					<span className={styled.span}>Do Not Have an Account ?</span>
-					<button className={styled.register}>
-						<Link href="/register" className={styled.link}>Sign Up</Link>
-					</button>
+					<Link href="/register" className={styled.register}>
+						Sign Up
+					</Link>
 				</div>
 			</div>
 		</div>
