@@ -1,11 +1,17 @@
 "use client";
 import { useEffect } from "react";
-import { AiOutlineGoogle } from "react-icons/ai";
+import { Button, Input, Form } from "antd";
+import {
+	GoogleOutlined,
+	EyeTwoTone,
+	EyeInvisibleOutlined,
+} from "@ant-design/icons";
 import { auth, googleProvider, db } from "./firebase.js";
 import { logIn, logOut } from "@/redux/authSlice.js";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithRedirect, getRedirectResult, signOut } from "firebase/auth";
+import { Container, Wrapper } from "../styles/index.global.js";
 
 export default function Home() {
 	const dispatch = useDispatch();
@@ -18,11 +24,11 @@ export default function Home() {
 	};
 
 	const logout = async uid => {
-		await deleteDoc(doc(db, "login", uid))
-	}
+		await deleteDoc(doc(db, "login", uid));
+	};
 
 	const handleLogout = uid => {
-		logout(uid)
+		logout(uid);
 		signOut(auth)
 			.then(() => {
 				dispatch(logOut());
@@ -55,7 +61,13 @@ export default function Home() {
 						expToken: result.user.stsTokenManager.expirationTime,
 					};
 					dispatch(logIn(data));
-					createLogin(data.uid,data.username,data.email,data.expToken,data.refreshToken)
+					createLogin(
+						data.uid,
+						data.username,
+						data.email,
+						data.expToken,
+						data.refreshToken
+					)
 						.then(() => console.log("Berhasil"))
 						.catch(error => console.log(error));
 				}
@@ -66,20 +78,71 @@ export default function Home() {
 	}, [dispatch]);
 
 	return (
-		<div>
-			<div>
-				<div onClick={() => handleGoogle()}>
-					<AiOutlineGoogle />
-					<span>Login With Google</span>
-				</div>
-				<div onClick={() => handleLogout(uid)}>
-					<span>Logout</span>
-				</div>
+		<Container>
+			<Wrapper>
 				<div>
-					<span>{username} sudah login</span>
-					<span>{email} emailnya</span>
+					<Form
+						name="basic"
+						labelCol={{
+							span: 8,
+						}}
+						wrapperCol={{
+							span: 16,
+						}}
+						style={{
+							maxWidth: 600,
+						}}
+						initialValues={{
+							remember: true,
+						}}
+						autoComplete="off">
+						<h1>Login Page</h1>
+						<Form.Item
+							label="Username"
+							name="username"
+							rules={[
+								{
+									required: true,
+									message: "Please input your username!",
+								},
+							]}>
+							<Input />
+						</Form.Item>
+
+						<Form.Item
+							label="Password"
+							name="password"
+							rules={[
+								{
+									required: true,
+									message: "Please input your password!",
+								},
+							]}>
+							<Input.Password
+								placeholder="input password"
+								iconRender={visible =>
+									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+								}
+							/>
+						</Form.Item>
+						<Form.Item
+							wrapperCol={{
+								offset: 8,
+								span: 16,
+							}}>
+							<Button type="primary" htmlType="submit">
+								Submit
+							</Button>
+						</Form.Item>
+					</Form>
+					<div onClick={() => handleGoogle()}>
+						<span>Or</span>
+						<Button type="primary" icon={<GoogleOutlined />}>
+							Login With Google
+						</Button>
+					</div>
 				</div>
-			</div>
-		</div>
+			</Wrapper>
+		</Container>
 	);
 }

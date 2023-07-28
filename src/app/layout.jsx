@@ -1,5 +1,6 @@
 import StyledComponentsRegistry from "@/lib/antRegistry";
 import { ReduxProvider } from "@/redux/provider";
+import "../styles/index.global.css"
 
 export const metadata = {
 	title: "Molitics Apps",
