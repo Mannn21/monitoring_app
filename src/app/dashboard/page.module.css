@@ -1,0 +1,115 @@
+.container {
+    width: 100%;
+    height: 100vh;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.infoWrapper {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 2px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+}
+
+.titleWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.title {
+    font-size: 35px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    color: #071224;
+}
+
+.date {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.1px;
+    color: #262b33;
+}
+
+.statisticWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    height: 100%;
+    gap: 25px;
+}
+
+.averageWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+    align-items: flex-end;
+}
+
+.averageTitle {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    color: #071224;
+    text-align: end;
+}
+
+.average {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.1px;
+    color: #262b33;
+}
+
+.listWrapper {
+    width: 100%;
+    height: calc(100% - 280px);
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+}
+
+.classWrapper {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 5px;
+}
+
+.subClassWrapper {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(37,46,71,0.75);
+}
