@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.content {
+    width: calc(100% - 280px);
+    border: 1px solid red;
+}

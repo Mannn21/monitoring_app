@@ -1,4 +1,5 @@
-import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
+import styled from "./layout.module.css"
 
 export const metadata = {
 	title: "Molitics Apps | Dashboard",
@@ -10,9 +11,9 @@ export const metadata = {
 
 export default function DashboardLayout({ children }) {
 	return (
-		<div>
-			<Navbar />
-			{children}
+		<div className={styled.container}>
+			<Sidebar />
+			<div className={styled.content}>{children}</div>
 		</div>
 	);
 }
