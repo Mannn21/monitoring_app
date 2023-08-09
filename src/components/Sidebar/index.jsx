@@ -21,11 +21,11 @@ const Sidebar = () => {
 			<div className={styled.wrapper}>
 				<div className={styled.burgerWrapper}>
 					{isOpen ? (
-						<div onClick={() => setIsOpen(!isOpen)}>
+						<div onClick={() => setIsOpen(!isOpen)} className={styled.icon}>
 							<AiOutlineClose size={25} />
 						</div>
 					) : (
-						<div onClick={() => setIsOpen(!isOpen)}>
+						<div onClick={() => setIsOpen(!isOpen)} className={styled.icon}>
 							<AiOutlineMenu size={25} />
 						</div>
 					)}

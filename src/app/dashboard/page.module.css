@@ -81,7 +81,6 @@
 .listWrapper {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid red;
 }
 
 .classWrapper {

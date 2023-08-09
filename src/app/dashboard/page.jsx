@@ -1,6 +1,9 @@
 import styled from "./page.module.css";
 import dayjs from "dayjs";
 import List from "@/components/List"
+import Activity from "@/components/Activity";
+import ClassProfile from "@/components/ClassProfile";
+import ClassMember from "@/components/ClassMember";
 
 const Page = () => {
 	const currentDate = dayjs();
@@ -24,11 +27,16 @@ const Page = () => {
 				</div>
 				<div className={styled.classWrapper}>
 					<div className={styled.subClassWrapper}>
-						<div className={styled.headerClass}></div>
-						<div className={styled.listClass}></div>
+						<ClassProfile />
+						{/* <div className={styled.headerClass}></div>
+						<div className={styled.listClass}></div> */}
 					</div>
-					<div className={styled.subClassWrapper}></div>
-					<div className={styled.subClassWrapper}></div>
+					<div className={styled.subClassWrapper}>
+						<ClassMember />
+					</div>
+					<div className={styled.subClassWrapper}>
+						<Activity />
+					</div>
 				</div>
 			</div>
 		</div>
