@@ -1,14 +1,19 @@
+import styled from "./index.module.css"
+
 const ClassMember = () => {
     return (
-        <div>
-            <h4>Member of Class</h4>
-            <ul>
-                <li>James Manty</li>
-                <li>Grave John</li>
-                <li>Jonny Plane</li>
-                <li>Liana Nairy</li>
-                <li>Mary Lone</li>
-            </ul>
+        <div className={styled.container}>
+            <h4 className={styled.header}>Todays Tasks</h4>
+            <div className={styled.taskWrapper}>
+                <div className={styled.tasks}>
+                    <span className={styled.total}>10</span>
+                    <span className={styled.task}>All Tasks</span>
+                </div>
+                <div className={styled.tasks}>
+                    <span className={styled.total}>3</span>
+                    <span className={styled.task}>Done</span>
+                </div>
+            </div>
         </div>
     )
 }
