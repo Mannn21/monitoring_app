@@ -1,5 +1,5 @@
 .container {
-    @apply w-screen h-screen box-border bg-white 
+    @apply w-screen h-screen box-border bg-white
 }
 
 .wrapper {
@@ -7,34 +7,42 @@
 }
 
 .loginBox {
-    @apply w-96 h-4/5 flex flex-col gap-4 items-center justify-start overflow-hidden bg-blue-600
+    @apply w-96 h-3/5 flex flex-col gap-4 items-center justify-start overflow-hidden rounded-md p-2 bg-slate-400
 }
 
 .headerWrapper {
-    @apply w-full h-1/5 flex justify-center items-center bg-red-300
+    @apply w-full h-1/5 flex justify-center items-center gap-1 flex-col 
+}
+
+.header {
+    @apply font-bold text-2xl text-center tracking-wider
+}
+
+.message {
+    @apply font-medium text-base text-center tracking-wider text-red-700
 }
 
 .inputWrapper {
-    height: calc(100% - 2rem - 40%);
-    @apply w-full bg-gray-600
+    height: calc(100% - 8rem - 20%);
+    @apply w-full flex flex-col justify-center items-center gap-7
 }
 
 .inputBox {
-
+    @apply w-full flex flex-col justify-start items-start gap-2
 }
 
 .label {
-
+    @apply font-semibold text-lg tracking-wider
 }
 
 .input {
-
+    @apply w-full h-8 text-base tracking-wider p-1 text-slate-700
 }
 
 .buttonWrapper {
-    @apply w-full h-1/5 bg-red-300
+    @apply w-full h-28 flex justify-center items-center
 }
 
 .button {
-
+    @apply w-full h-10 flex justify-center items-center bg-orange-500 text-lg font-semibold tracking-wider text-white 
 }
