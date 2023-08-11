@@ -1,9 +1,9 @@
-const Loading = () => {
+import styled from "./page.module.css"
+
+export default function Loading() {
     return (
         <div>
-            Dashboard page Loading....
+            Loading Dashboard Page...
         </div>
     )
 }
-
-export default Loading

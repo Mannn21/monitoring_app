@@ -1,131 +1,40 @@
 .container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
+    @apply w-screen h-screen box-border bg-white 
 }
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 440px;
-    height: 500px;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px;
-    gap: 20px;
+    @apply w-full h-full flex justify-center items-center bg-white 
+}
+
+.loginBox {
+    @apply w-96 h-4/5 flex flex-col gap-4 items-center justify-start overflow-hidden bg-blue-600
 }
 
 .headerWrapper {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-}
-
-.header {
-    font-size: 45px;
-    letter-spacing: 1.1px;
-    font-weight: 600;
-}
-
-.span {
-    font-size: 18px;
-    letter-spacing: 1.1px;
-}
-
-.inputContainer {
-    width: 100%;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    @apply w-full h-1/5 flex justify-center items-center bg-red-300
 }
 
 .inputWrapper {
-    width: 100%;
-    height: calc((100% - 60px) / 2);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 6px;
+    height: calc(100% - 2rem - 40%);
+    @apply w-full bg-gray-600
+}
+
+.inputBox {
+
 }
 
 .label {
-    font-size: 16px;
-    letter-spacing: 1.1px;
+
 }
 
 .input {
-    width: 100%;
-    height: 35px;
-    border-radius: 0;
-    border: 1px solid #444;
-    padding: 5px;
-    font-size: 14px;
-    letter-spacing: 1.1px;
+
 }
 
-.submitWrapper {
-    width: 100%;
-    height: 40px;
+.buttonWrapper {
+    @apply w-full h-1/5 bg-red-300
 }
 
-.submit {
-    width: 100%;
-    height: 100%;
-    color: white;
-    background-color: rgb(84, 84, 248);
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1.1px;
-    border: 1px solid #444;
-    cursor: pointer;
-}
+.button {
 
-.google {
-    width: 100%;
-    height: 100%;
-    color: white;
-    background-color: rgb(255, 60, 0);
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1.1px;
-    border: 1px solid #444;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.registerWrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 70px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px
-}
-
-.register {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 155, 26);
-    border: 1px solid #444;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1.1px;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

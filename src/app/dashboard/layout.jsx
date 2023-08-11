@@ -1,19 +1,14 @@
-import Sidebar from "@/components/Sidebar";
-import styled from "./layout.module.css"
+import '../globals.css'
 
 export const metadata = {
-	title: "Molitics Apps | Dashboard",
-	description: "Monitoring Apps With Firebase",
-	icons: {
-		icon: "/icon.ico",
-	},
-};
+  title: 'Dashboard | Monitoring Apps',
+  description: 'Monitoring Attendance Apps',
+}
 
-export default function DashboardLayout({ children }) {
-	return (
-		<div className={styled.container}>
-			<Sidebar />
-			<div className={styled.content}>{children}</div>
-		</div>
-	);
+export default function RootLayout({ children }) {
+  return (
+    <div>
+        {children}
+    </div>
+  )
 }

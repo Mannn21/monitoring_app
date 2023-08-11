@@ -1,9 +1,11 @@
 "use client"
 
-export default function Error () {
+import styled from "./page.module.css"
+
+export default function Error() {
     return (
         <div>
-            Dashboard page Error....
+            Error Dashboard Page
         </div>
     )
 }
