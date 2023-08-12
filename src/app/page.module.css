@@ -7,7 +7,10 @@
 }
 
 .loginBox {
-    @apply w-96 h-3/5 flex flex-col gap-4 items-center justify-start overflow-hidden rounded-md p-2 bg-slate-400
+    box-shadow: 6px 6px 5px 0px rgba(64,64,64,0.75);
+    -webkit-box-shadow: 6px 6px 5px 0px rgba(64,64,64,0.75);
+    -moz-box-shadow: 6px 6px 5px 0px rgba(64,64,64,0.75);
+    @apply w-96 h-3/5 flex flex-col gap-4 items-center justify-start overflow-hidden rounded-md p-2
 }
 
 .headerWrapper {
@@ -37,6 +40,10 @@
 
 .input {
     @apply w-full h-8 text-base tracking-wider p-1 text-slate-700
+}
+
+.input:focus {
+    @apply outline-none border-b border-b-gray-600
 }
 
 .buttonWrapper {

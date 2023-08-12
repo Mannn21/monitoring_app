@@ -10,3 +10,23 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+.content-container {
+  @apply w-screen h-screen flex flex-row
+}
+
+.content-wrapper {
+  width: calc(100% - 220px);
+}
+
+.nav {
+  @apply w-full p-1 flex flex-row justify-start items-center gap-2 no-underline text-black
+}
+
+.nav:hover {
+  @apply bg-slate-900 text-white
+}
+
+.navTitle {
+  @apply text-base font-light tracking-wider 
+}

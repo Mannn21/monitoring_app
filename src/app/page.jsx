@@ -50,6 +50,7 @@ export default function Page() {
 								id="userId"
 								placeholder="Input your Id Number"
 								className={styled.input}
+								autoComplete="off"
 								onChange={e => handleId(e.target.value)}
 							/>
 						</div>
@@ -62,6 +63,7 @@ export default function Page() {
 								id="password"
 								placeholder="********"
 								className={styled.input}
+								autoComplete="off"
 								onChange={e => handlePassword(e.target.value)}
 							/>
 						</div>

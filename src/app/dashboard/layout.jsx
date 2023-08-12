@@ -1,14 +1,16 @@
-import '../globals.css'
+import "../globals.css";
+import Sidebar from "../../components/Sidebar";
 
 export const metadata = {
-  title: 'Dashboard | Monitoring Apps',
-  description: 'Monitoring Attendance Apps',
-}
+	title: "Dashboard | Monitoring Apps",
+	description: "Monitoring Attendance Apps",
+};
 
 export default function RootLayout({ children }) {
-  return (
-    <div>
-        {children}
-    </div>
-  )
+	return (
+		<div className="content-container">
+			<Sidebar />
+			<div className="content-wrapper">{children}</div>
+		</div>
+	);
 }

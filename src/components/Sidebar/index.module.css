@@ -1,0 +1,43 @@
+.container {
+    box-shadow: 3px 3px 5px 0px rgba(64,64,64,0.75);
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(64,64,64,0.75);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(64,64,64,0.75);
+    @apply w-56 h-screen box-border
+}
+
+.wrapper {
+    @apply w-full h-full p-2 flex flex-col gap-2
+}
+
+.headerWrapper {
+    @apply w-full h-56
+}
+
+.burgerWrapper {
+    @apply w-full h-8 flex justify-end items-center
+}
+
+.header {
+    height: calc(100% - 2rem);
+    @apply w-full flex flex-col justify-start items-center gap-1
+}
+
+.imageWrapper {
+    box-shadow: 1px 1px 3px 0px rgba(41, 41, 41, 0.75);
+    -webkit-box-shadow: 1px 1px 3px 0px rgba(41, 41, 41, 0.75);
+    -moz-box-shadow: 1px 1px 3px 0px rgba(41, 41, 41, 0.75);
+    @apply rounded-full w-40 h-40 flex justify-center items-center overflow-hidden border border-slate-200
+}
+
+.navWrapper {
+    height: calc(100% - 20rem);
+    @apply w-full p-2 pt-5 flex flex-col gap-3 justify-start items-start
+}
+
+.logoutWrapper {
+    @apply w-full h-20 flex justify-center items-center
+}
+
+.button {
+    @apply w-full p-2 flex justify-center items-center tracking-wider text-white text-base font-normal bg-red-700
+}
