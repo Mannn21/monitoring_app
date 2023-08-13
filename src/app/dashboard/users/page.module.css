@@ -1,0 +1,20 @@
+.container {
+    @apply w-full h-full p-8
+}
+
+.headerWrapper {
+    @apply w-full h-14 flex flex-row justify-between items-center mb-4
+}
+
+.header {
+    @apply font-bold text-2xl tracking-wider
+}
+
+.search {
+    @apply w-80 h-full flex items-center justify-center
+}
+
+.table {
+    height: calc(100% - 3.5rem);
+    @apply w-full overflow-auto
+}

@@ -1,5 +1,5 @@
 import dayjs, {locale} from "dayjs";
-import UserMap from "@/utils/mapUsers";
+import AttendancesMap from "@/utils/attendancesMap";
 import styled from "./page.module.css";
 
 export default function Page() {
@@ -43,7 +43,7 @@ export default function Page() {
 							</tr>
 						</thead>
 						<tbody className="overflow-auto">
-							<UserMap />
+							<AttendancesMap />
 						</tbody>
 					</table>
 				</div>

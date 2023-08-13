@@ -1,7 +1,7 @@
 import { Users } from "@/data/users";
 import "@/app/globals.css";
 
-const UserMap = () => {
+const AttendancesMap = () => {
 	return Users?.map(user => {
 		return (
 			<tr
@@ -25,19 +25,6 @@ const UserMap = () => {
 						</label>
 					</div>
 				</td>
-				<td className="w-10 p-4 ">
-					<div className="flex items-center justify-center">
-						<input
-							type="text"
-							id="small-input"
-							maxLength="1"
-							class="block w-10 h-10 p-2 uppercase text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center"
-						/>
-						<label for="checkbox-table-1" className="sr-only">
-							Attitude
-						</label>
-					</div>
-				</td>
 				<td className="w-10 p-4">
 					<div className="flex items-center justify-center">
 						<input
@@ -51,9 +38,22 @@ const UserMap = () => {
 						</label>
 					</div>
 				</td>
+				<td className="w-10 p-4 ">
+					<div className="flex items-center justify-center">
+						<input
+							type="text"
+							id="small-input"
+							maxLength="1"
+							class="block w-10 h-10 p-2 uppercase text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center"
+						/>
+						<label for="checkbox-table-1" className="sr-only">
+							Attitude
+						</label>
+					</div>
+				</td>
 			</tr>
 		);
 	});
 };
 
-export default UserMap;
+export default AttendancesMap;
