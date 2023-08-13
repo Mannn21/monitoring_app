@@ -1,0 +1,36 @@
+.container {
+    @apply w-full h-full
+}
+
+.headerWrapper {
+    @apply w-full h-20 p-8 flex flex-row justify-between items-center
+}
+
+.header {
+    @apply font-bold text-2xl text-black tracking-wider
+}
+
+.day {
+    @apply font-bold text-xl text-black tracking-wider
+}
+
+.table {
+    height: calc(100% - 5rem);
+    @apply w-full p-3 overflow-auto
+}
+
+.head {
+    @apply w-full h-auto p-2 flex flex-row justify-between items-center
+}
+
+.name {
+    @apply w-36 h-full flex flex-row justify-start items-center
+}
+
+.class {
+    @apply w-24 h-full flex flex-row justify-center items-center
+}
+
+.attendance {
+    @apply w-10 h-10 flex flex-row justify-center items-center border border-black
+}

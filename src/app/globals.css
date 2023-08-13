@@ -12,11 +12,19 @@ body {
 }
 
 .content-container {
-  @apply w-screen h-screen flex flex-row
+  @apply h-screen w-full flex flex-row box-border
+}
+
+.side-wrapper {
+  background-color: transparent;
+  width: 14rem;
+  @apply h-screen box-border
 }
 
 .content-wrapper {
-  width: calc(100% - 220px);
+  width: calc(100% - 14rem);
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .nav {
@@ -29,4 +37,48 @@ body {
 
 .navTitle {
   @apply text-base font-light tracking-wider 
+}
+
+.userList {
+  @apply w-full h-auto p-2 flex flex-row justify-between items-center gap-14
+}
+
+.userName {
+  @apply w-60 h-full flex flex-row justify-start items-center bg-red-500
+}
+
+.userClass {
+  @apply w-24 h-full flex flex-row justify-center items-center bg-red-600
+}
+
+.userAttendance {
+  @apply w-10 h-10 flex flex-row justify-center items-center border border-black
+}
+
+.checkboxInput {
+  @apply w-5 h-5
+}
+
+.userAttitude {
+  @apply w-10 h-10 flex flex-row justify-center items-center border border-black
+}
+
+.attitudeInput {
+  @apply w-5 h-5 ml-2
+}
+
+.attitudeInput:focus {
+  @apply outline-none
+}
+
+.userGrade {
+  @apply w-14 h-10 flex flex-row justify-start items-center border border-black
+}
+
+.gradeInput {
+  @apply w-full h-5 ml-2
+} 
+
+.gradeInput:focus {
+  @apply outline-none
 }
