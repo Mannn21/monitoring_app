@@ -1,24 +1,23 @@
 import styled from "./index.module.css";
-import {Users} from "@/data/users.js";
+import { sortedUserByName } from "@/utils/sortedUserName";
+import { Users } from "@/data/users.js";
 
 const MonthlyTable = () => {
-	return Users?.map(user => {
+	const sortedUser = sortedUserByName(Users);
+	return sortedUser.map(user => {
 		return (
-			<tr class={styled.row} key={user.id}>
-				<th scope="row" class={styled.tableHead}>
+			<tr className={styled.row} key={user.id} align="center">
+				<th scope="row" className={styled.tableHead}>
 					{user.name}
 				</th>
-				<td class="px-6 py-4">{user.grade}</td>
-				<td class="px-6 py-4">
-					<span>{user.attendance.present}</span>
-					<span>{user.attendance.permission}</span>
-					<span>{user.attendance.sick}</span>
-					<span>{user.attendance.alpha}</span>
-				</td>
-				<td class="px-6 py-4">{user.attitude}</td>
-				<td class="px-6 py-4 text-right">
-					{user.id}
-				</td>
+				<td className="px-6 py-4">{user.class}</td>
+				<td className="px-6 py-4">{user.grade}</td>
+				<td className="px-6 py-4">{user.attendance.present}</td>
+				<td className="px-6 py-4">{user.attendance.permission}</td>
+				<td className="px-6 py-4">{user.attendance.sick}</td>
+				<td className="px-6 py-4">{user.attendance.alpha}</td>
+				<td className="px-6 py-4">{user.attitude}</td>
+				<td className="px-6 py-4">{user.rank}</td>
 			</tr>
 		);
 	});

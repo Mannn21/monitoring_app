@@ -1,5 +1,5 @@
 import MonthlyTable from "@/components/MonthlyTable";
-import { AiOutlinePrinter } from "react-icons/ai";
+import { AiOutlineFilePdf } from "react-icons/ai";
 import styled from "./page.module.css";
 
 export default function Page() {
@@ -8,13 +8,13 @@ export default function Page() {
 			<div className={styled.headerWrapper}>
 				<h2 className={styled.header}>Students Monthly Reports</h2>
 				<div className={styled.print}>
-					<AiOutlinePrinter size={25} />
-					<span>Print</span>
+					<AiOutlineFilePdf size={25} />
+					<span>Export</span>
 				</div>
 			</div>
 			<div className={styled.tableContainer}>
 				<div className={styled.tableWrapper}>
-					<table className={styled.table} border="1">
+					<table className={styled.table}>
 						<caption className={styled.caption}>
 							Teacher: Aimanurrofi
 							<p className={styled.yearCaption}>
@@ -26,45 +26,45 @@ export default function Page() {
 								<th
 									scope="col"
 									rowSpan="2"
-									className="px-6 py-3 text-center">
+									className="px-6 py-3 text-center bg-red-400">
 									Name
 								</th>
 								<th
 									scope="col"
 									rowSpan="2"
-									className="px-6 py-3 text-center">
+									className="px-6 py-3 text-center bg-yellow-400">
 									Class
 								</th>
 								<th
 									scope="col"
 									rowSpan="2"
-									className="px-6 py-3 text-center">
+									className="px-6 py-3 text-center bg-green-400">
 									Grade
 								</th>
 								<th
 									scope="col"
 									colSpan="4"
-									className="px-6 py-3 text-center">
+									className="px-6 py-3 text-center bg-teal-400">
 									Attendance
 								</th>
 								<th
 									scope="col"
 									rowSpan="2"
-									className="px-6 py-3 text-center">
+									className="px-6 py-3 text-center bg-purple-400">
 									Attitude
 								</th>
+								<th
+									scope="col"
+									rowSpan="2"
+									className="px-6 py-3 text-center bg-lime-400">
+									Rank
+								</th>
 							</tr>
-						</thead>
-						<thead className={styled.tableHead2}>
 							<tr>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th className="w-6 px-6 py-3">Pr</th>
-								<th className="w-6 px-6 py-3">Pe</th>
-								<th className="w-6 px-6 py-3">Si</th>
-								<th className="w-6 px-6 py-3">Al</th>
-								<th></th>
+								<th className="w-6 px-6 py-3 bg-pink-400">Pr</th>
+								<th className="w-6 px-6 py-3 bg-indigo-500">Pe</th>
+								<th className="w-6 px-6 py-3 bg-orange-400">Si</th>
+								<th className="w-6 px-6 py-3 bg-amber-400">Al</th>
 							</tr>
 						</thead>
 						<tbody>

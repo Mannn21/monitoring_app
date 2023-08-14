@@ -36,10 +36,6 @@
 }
 
 .tableHead {
-    @apply w-full h-10 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-24
-}
-
-.tableHead2 {
-    top: 8.5rem;
-    @apply text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky
+    top: 95px;
+    @apply w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky
 }
