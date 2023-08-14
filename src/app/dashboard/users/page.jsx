@@ -1,5 +1,5 @@
 import styled from "./page.module.css";
-import UsersMap from "@/utils/usersMap";
+import UsersMap from "@/components/UsersTable";
 
 export default function Page() {
 	return (
@@ -11,14 +11,14 @@ export default function Page() {
 						type="text"
 						id="small-input"
                         placeholder="Search Users...."
-						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						className={styled.searchInput}
 					/>
 				</div>
 			</div>
-			<div className={styled.table}>
-				<div className="relative overflow-x-auto overflow-auto shadow-md sm:rounded-lg">
-					<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-						<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+			<div className={styled.tableContainer}>
+				<div className={styled.tableWrapper}>
+					<table className={styled.table}>
+						<thead className={styled.tableHead}>
 							<tr>
 								<th scope="col" className="px-6 py-3">
 									Name

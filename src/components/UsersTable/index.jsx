@@ -1,17 +1,18 @@
 import { Users } from "@/data/users";
-import { Avatar } from "./avatar";
+import { Avatar } from "@/utils/avatar";
 import {AiFillEdit, AiFillDelete} from "react-icons/ai"
 import {BsDot} from "react-icons/bs"
+import styled from "./index.module.css"
 
 const UsersMap = () => {
 	return Users?.map(user => {
 		return (
 			<tr
-				className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+				className={styled.row}
 				key={user.id}>
 				<th
 					scope="row"
-					className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+					className={styled.head}>
 					<Avatar
 						username={user.image}
 						saturation={200}
@@ -45,14 +46,14 @@ const UsersMap = () => {
 				<td className="px-6 py-4">
 					<a
 						href="#"
-						className="font-medium text-green-600 dark:text-green-500 hover:underline flex justify-center">
+						className={styled.edit}>
 						<AiFillEdit size={20}/>
 					</a>
 				</td>
 				<td className="px-6 py-4">
 					<a
 						href="#"
-						className="font-medium text-red-600 dark:text-red-500 hover:underline flex justify-center">
+						className={styled.delete}>
 						<AiFillDelete size={20}/>
 					</a>
 				</td>

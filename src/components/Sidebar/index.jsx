@@ -35,7 +35,7 @@ const Sidebar = () => {
 							/>
 						</div>
 						<div>
-							<span>Users123</span>
+							<span>Aimanurrofi</span>
 						</div>
 					</div>
 				</div>
