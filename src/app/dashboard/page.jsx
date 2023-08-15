@@ -58,34 +58,53 @@ export default function Page() {
 							height={240}
 						/>
 					</div>
+					<div>
+						<label
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+							for="user_avatar">
+							Change Picture
+						</label>
+						<input
+							class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+							aria-describedby="user_avatar_help"
+							id="user_avatar"
+							type="file"
+						/>
+						<div
+							class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+							id="user_avatar_help">
+							Change your profile picture for update account
+						</div>
+						<button className={styled.button}>Submit</button>
+					</div>
 				</div>
 				<div className={`${styled.section} ${styled.details}`}>
 					<h2 className={styled.headerSection}>My Details</h2>
 					<div div className={styled.detailWrapper}>
 						<div>
 							<div className={styled.iconWrapper}>
-								<AiFillIdcard size={22}/>
+								<AiFillIdcard size={22} />
 								<h3>Name</h3>
 							</div>
 							<span className={styled.span}>Aimanurrofi</span>
 						</div>
 						<div>
 							<div className={styled.iconWrapper}>
-								<MdOutlineAlternateEmail size={22}/>
+								<MdOutlineAlternateEmail size={22} />
 								<h3>Email</h3>
 							</div>
 							<span className={styled.span}>aiman123@email.com</span>
 						</div>
 						<div>
 							<div className={styled.iconWrapper}>
-								<AiFillHome size={22}/>
+								<AiFillHome size={22} />
 								<h3>Home Address</h3>
 							</div>
 							<span className={styled.span}>GHA A4/11</span>
 						</div>
 						<div>
 							<div className={styled.iconWrapper}>
-								<MdGroup size={22}/>
+								<MdGroup size={22} />
 								<h3>Joined</h3>
 							</div>
 							<span className={styled.span}>Joined since October 2020</span>
