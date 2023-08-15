@@ -62,7 +62,7 @@ export default function Page() {
 							</tr>
 							<tr>
 								<th className="w-6 px-6 py-3 bg-pink-400">Pr</th>
-								<th className="w-6 px-6 py-3 bg-indigo-500">Pe</th>
+								<th className="w-6 px-6 py-3 bg-indigo-400">Pe</th>
 								<th className="w-6 px-6 py-3 bg-orange-400">Si</th>
 								<th className="w-6 px-6 py-3 bg-amber-400">Al</th>
 							</tr>

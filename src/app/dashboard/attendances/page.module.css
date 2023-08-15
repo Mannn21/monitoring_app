@@ -16,11 +16,11 @@
 
 .tableContainer {
     height: calc(100% - 5rem);
-    @apply w-full px-8 py-3 overflow-auto
+    @apply w-full px-8 pb-3 overflow-auto overflow-x-auto
 }
 
 .tableWrapper {
-    @apply relative overflow-x-auto shadow-md sm:rounded-lg
+    @apply relative shadow-md sm:rounded-lg
 }
 
 .table {
@@ -28,7 +28,7 @@
 }
 
 .tableHead {
-    @apply text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400
+    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400
 }
 
 .head {

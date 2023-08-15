@@ -20,22 +20,25 @@ export default function Page() {
 					<table className={styled.table}>
 						<thead className={styled.tableHead}>
 							<tr>
-								<th scope="col" className="px-6 py-3">
+								<th scope="col" className="px-3 py-5 text-center bg-orange-400">
+									No
+								</th>
+								<th scope="col" className="px-6 py-5 bg-indigo-500">
 									Name
 								</th>
-								<th scope="col" className="px-6 py-3">
+								<th scope="col" className="px-6 py-5 bg-lime-500">
 									Address
 								</th>
-								<th scope="col" className="px-6 py-3">
+								<th scope="col" className="px-6 py-5 bg-amber-500">
 									Phone Number
 								</th>
-								<th scope="col" className="px-6 py-3">
+								<th scope="col" className="px-6 py-5 bg-rose-500">
 									Status
 								</th>
-								<th scope="col" className="px-6 py-3 text-center">
+								<th scope="col" className="px-6 py-5 text-center bg-teal-500">
 									Edit
 								</th>
-								<th scope="col" className="px-6 py-3 text-center">
+								<th scope="col" className="px-6 py-5 text-center bg-purple-500">
 									Delete
 								</th>
 							</tr>

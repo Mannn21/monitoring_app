@@ -1,4 +1,4 @@
-import { AiOutlineHistory, AiOutlineHome, AiOutlineFileDone } from "react-icons/ai";
+import { AiOutlineHistory, AiOutlineHome, AiOutlineFileDone, AiOutlineUserAdd } from "react-icons/ai";
 import {PiUsers} from "react-icons/pi"
 import {BsCardChecklist} from "react-icons/bs"
 import { RiFileUserLine } from "react-icons/ri"
@@ -39,5 +39,11 @@ export const Navigation = [
         title: "Users Reports",
         icon: <RiFileUserLine size={25}/>,
         location: "/dashboard/users-reports"
+    },
+    {
+        id: 8,
+        title: "Add User",
+        icon: <AiOutlineUserAdd size={25}/>,
+        location: "/dashboard/add-user"
     },
 ];

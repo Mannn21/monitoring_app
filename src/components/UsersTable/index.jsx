@@ -10,6 +10,9 @@ const UsersMap = () => {
 			<tr
 				className={styled.row}
 				key={user.id}>
+				<th className="px-3 py-4 text-center">
+					{user.id}
+				</th>
 				<th
 					scope="row"
 					className={styled.head}>

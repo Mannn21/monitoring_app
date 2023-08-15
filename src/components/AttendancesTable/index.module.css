@@ -2,12 +2,16 @@
     @apply bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
 }
 
+.id {
+    @apply px-3 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white
+}
+
 .name {
-    @apply px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white
+    @apply px-6 py-4 text-center font-medium text-gray-700 whitespace-nowrap dark:text-white
 }
 
 .class {
-    @apply px-6 py-4
+    @apply px-6 py-4 text-center font-medium text-gray-700 whitespace-nowrap dark:text-white
 }
 
 .data {
@@ -19,7 +23,7 @@
 }
 
 .checkbox {
-    @apply w-10 h-10 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
+    @apply w-5 h-5 rounded text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
 }
 
 .numberInput {

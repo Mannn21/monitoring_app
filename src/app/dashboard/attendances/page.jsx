@@ -19,26 +19,55 @@ export default function Page() {
 					<table className={styled.table}>
 						<thead className={styled.tableHead}>
 							<tr>
-								<th scope="col" className="px-6">
+								<th
+									scope="col"
+									rowSpan="2"
+									className="px-6 py-3 text-center bg-lime-400">
+									No
+								</th>
+								<th
+									scope="col"
+									rowSpan="2"
+									className="px-6 py-3 text-center bg-red-400">
 									Name
 								</th>
-								<th scope="col" className="px-6">
+								<th
+									scope="col"
+									rowSpan="2"
+									className="px-6 py-3 text-center bg-yellow-400">
 									Class
 								</th>
-								<th scope="col" className="px-6">
-									<div className="w-full flex items-center">
-										<span>Attendance</span>
-									</div>
+								<th
+									scope="col"
+									colSpan="4"
+									className="px-6 py-3 text-center bg-green-400">
+									Attendance
 								</th>
-								<th scope="col" className="px-6">
-									<div className="w-full flex items-center">
-										<span>Grade</span>
-									</div>
+								<th
+									scope="col"
+									rowSpan="2"
+									className="px-6 py-3 text-center bg-teal-400">
+									Grade
 								</th>
-								<th scope="col" className="px-6">
-									<div className="w-full flex items-center">
-										<span>Attitude</span>
-									</div>
+								<th
+									scope="col"
+									rowSpan="2"
+									className="px-6 py-3 text-center bg-purple-400">
+									Attitude
+								</th>
+							</tr>
+							<tr>
+								<th scope="col" className="w-6 px-6 py-3 bg-pink-400">
+									Pr
+								</th>
+								<th scope="col" className="w-6 px-6 py-3 bg-indigo-400">
+									Pe
+								</th>
+								<th scope="col" className="w-6 px-6 py-3 bg-orange-400">
+									Si
+								</th>
+								<th scope="col" className="w-6 px-6 py-3 bg-amber-400">
+									Al
 								</th>
 							</tr>
 						</thead>
