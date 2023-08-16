@@ -24,7 +24,7 @@ const UsersMap = () => {
 					/>
 					<div className="pl-3">
 						<div className="text-base font-semibold">{user.name}</div>
-						<div className="font-normal text-gray-500">{user.class}</div>
+						<div className="font-normal text-gray-500">{user.classes}</div>
 					</div>
 				</th>
 				<td className="px-6 py-4">{user.address}</td>

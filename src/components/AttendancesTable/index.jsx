@@ -11,7 +11,7 @@ const AttendancesMap = () => {
 				<th scope="row" className={styled.name}>
 					{user.name}
 				</th>
-				<td className={styled.class}>{user.class}</td>
+				<td className={styled.class}>{user.classes}</td>
 				<td className={styled.data}>
 					<div className={styled.inputWrapper}>
 						<input

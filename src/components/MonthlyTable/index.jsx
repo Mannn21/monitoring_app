@@ -10,7 +10,7 @@ const MonthlyTable = () => {
 				<th scope="row" className={styled.tableHead}>
 					{user.name}
 				</th>
-				<td className="px-6 py-4">{user.class}</td>
+				<td className="px-6 py-4">{user.classes}</td>
 				<td className="px-6 py-4">{user.grade}</td>
 				<td className="px-6 py-4">{user.attendance.present}</td>
 				<td className="px-6 py-4">{user.attendance.permission}</td>

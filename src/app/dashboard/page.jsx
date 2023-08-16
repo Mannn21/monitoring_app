@@ -61,7 +61,7 @@ export default function Page() {
 					<div>
 						<label
 							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-							for="user_avatar">
+							htmlFor="user_avatar">
 							Change Picture
 						</label>
 						<input
