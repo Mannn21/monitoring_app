@@ -1,6 +1,9 @@
 import styled from "./page.module.css"
 
-export default function Page() {
+export default async function Page() {
+    const response = await fetch('http://localhost:3000/api/users')
+    console.log(response)
+    
     return (
         <div>
             Users Reports Page
