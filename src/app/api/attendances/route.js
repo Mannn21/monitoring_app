@@ -14,9 +14,27 @@ import bcrypt from "bcrypt";
 import dayjs from "dayjs";
 import { db } from "@/utils/firebase";
 
-// export const GET = async () => {
+export const GET = async () => {
+	try {
+		const datas = await getDocs(collection(db, "attendances"));
+		const data = [];
+		datas.forEach(doc => {
+			const docData = doc.data();
+			const { password, studentId, ...restData } = docData;
 
-// }
+			data.push({
+				id: doc.id,
+				...restData,
+			});
+		});
+		return NextResponse.json(
+			{ message: "Get Data Success", data },
+			{ status: 200 }
+		);
+	} catch (error) {
+		return NextResponse.json({ message: error }, { status: 500 });
+	}
+}
 
 export const POST = async (req, res) => {
 	const datas = await req.json();

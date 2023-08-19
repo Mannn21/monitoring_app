@@ -37,59 +37,58 @@ export const GET = async () => {
 
 export const POST = async (req, res) => {
 	const {
-		firstName,
-		lastName,
-		phoneNumber,
-		address,
-		studentClass,
-		teacher,
-		password,
-		confirmPassword,
+		data,
+		// imageURL,
+		// name,
+		// phoneNumber,
+		// address,
+		// studentClass,
+		// teacher,
+		// password,
+		// confirmPassword,
 	} = await req.json();
 
-	try {
-		if (password !== confirmPassword)
-			return NextResponse.json(
-				{ message: "Password Not Compare" },
-				{ status: 404 }
-			);
-		const salt = await bcrypt.genSalt(10);
-		const encryptedPassword = await bcrypt.hash(confirmPassword, salt);
-		const studentData = {
-			name: {
-				firstName,
-				lastName,
-			},
-			studentId: uuidv4(),
-			phoneNumber,
-			address,
-			class: {
-				studentClass,
-				teacher,
-			},
-			password: encryptedPassword,
-		};
-		const studentRef = doc(db, "students", uuidv4());
-		await setDoc(studentRef, studentData);
-		const data = {
-			name: {
-				firstName,
-				lastName,
-			},
-			phoneNumber,
-			address,
-			class: {
-				studentClass,
-				teacher,
-			},
-		};
-		return NextResponse.json(
-			{ message: "Created Student is Success", data },
-			{ status: 200 }
-		);
-	} catch (error) {
-		return NextResponse.json({ Error: error }, { status: 500 });
-	}
+	console.log(data)
+
+	// try {
+	// 	if (password !== confirmPassword)
+	// 		return NextResponse.json(
+	// 			{ message: "Password Not Compare" },
+	// 			{ status: 404 }
+	// 		);
+	// 	const salt = await bcrypt.genSalt(10);
+	// 	const encryptedPassword = await bcrypt.hash(confirmPassword, salt);
+	// 	const studentData = {
+	// 		name,
+	// 		studentId: uuidv4(),
+	// 		phoneNumber,
+	// 		imageURL,
+	// 		address,
+	// 		class: {
+	// 			studentClass,
+	// 			teacher,
+	// 		},
+	// 		password: encryptedPassword,
+	// 	};
+	// 	const studentRef = doc(db, "students", uuidv4());
+	// 	await setDoc(studentRef, studentData);
+	// 	const data = {
+	// 		name,
+	// 		imageURL,
+	// 		phoneNumber,
+	// 		address,
+	// 		class: {
+	// 			studentClass,
+	// 			teacher,
+	// 		},
+	// 	};
+	// 	return NextResponse.json(
+	// 		{ message: "Created Student is Success", data },
+	// 		{ status: 200 }
+	// 	);
+	// } catch (error) {
+	// 	return NextResponse.json({ Error: error }, { status: 500 });
+	// }
 };
 
 export const PUT = async (req, res) => {

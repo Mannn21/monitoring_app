@@ -1,13 +1,105 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "@/utils/firebase";
 import Image from "next/image";
 import styled from "./page.module.css";
 
 export default function AddUser() {
 	const [file, setFile] = useState();
-	function handleChange(e) {
+	const [image, setImage] = useState()
+	const [data, setData] = useState({
+		name: "",
+		gender: "",
+		userClass: "",
+		teacher: "",
+		phone: "",
+		address: "",
+		password: "",
+		confPassword: "",
+		image: ""
+	})
+
+	const handleName = e => {
+		setData(prev => ({...prev, name: e}))
+	}
+
+	const handleGender = e => {
+		setData(prev => ({...prev, gender: e}))
+	}
+
+	const handleClass = e => {
+		setData(prev => ({...prev, userClass: e}))
+	}
+
+	const handleTeacher = e => {
+		setData(prev => ({...prev, teacher: e}))
+	}
+
+	const handlePhone = e => {
+		setData(prev => ({...prev, phone: e}))
+	}
+
+	const handleAddress = e => {
+		setData(prev => ({...prev, address: e}))
+	}
+
+	const handlePassword = e => {
+		setData(prev => ({...prev, password: e}))
+	}
+
+	const handleConfPassword = e => {
+		setData(prev => ({...prev, confPassword: e}))
+	}
+
+	const handleImage = e => {
+		setImage(e.target.files[0])
 		setFile(URL.createObjectURL(e.target.files[0]));
+	}
+
+	async function submit() {
+		// const selectedFile = e.target.files[0];
+		// console.log(selectedFile)
+		await fetch("/api/users", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+			  },
+			body: JSON.stringify(data)
+		})
+		console.log({data})
+		if (image) {
+			const storageRef = ref(storage, image.name);
+			const uploadTask = uploadBytesResumable(storageRef, image);
+
+			uploadTask.on(
+				"state_changed",
+				snapshot => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log("Upload is " + progress + "% done");
+					switch (snapshot.state) {
+						case "paused":
+							console.log("Upload is paused");
+							break;
+						case "running":
+							console.log("Upload is running");
+							break;
+						default:
+							break;
+					}
+				},
+				error => {
+					console.log(error);
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+						setData(prev => ({...prev, image: downloadURL}))
+					});
+				}
+			);
+		}
 	}
 
 	return (
@@ -46,7 +138,7 @@ export default function AddUser() {
 						aria-describedby="user_avatar_help"
 						id="user_avatar"
 						type="file"
-						onChange={e => handleChange(e)}
+						onChange={e => handleImage(e)}
 					/>
 					<div className={styled.textImage} id="user_avatar_help">
 						A profile picture is useful to confirm your are logged into your
@@ -57,47 +149,50 @@ export default function AddUser() {
 					<div className={`${styled.inputBox} group`}>
 						<input
 							type="text"
-							name="floating_first_name"
-							id="floating_first_name"
+							name="name"
+							id="name"
 							className={`${styled.input} peer`}
+							autoComplete="off"
 							placeholder=" "
+							onChange={(e) => handleName(e.target.value)}
 							required
 						/>
 						<label
-							htmlFor="floating_first_name"
+							htmlFor="name"
 							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-							First name
+							Name
 						</label>
 					</div>
-					<div className={styled.inputBox}>
-						<input
-							type="text"
-							name="floating_last_name"
-							id="floating_last_name"
-							className={`${styled.input} peer`}
-							placeholder=" "
-							required
-						/>
-						<label
-							htmlFor="floating_last_name"
-							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-							Last name
+					<div className={`${styled.inputBox} group`}>
+						<label htmlFor="select_gender" className="sr-only">
+							Choose Gender
 						</label>
+						<select
+							id="select_gender"
+							className={`${styled.select} peer`}
+							onChange={e => handleGender(e.target.value)}
+							defaultValue="Choose Gender">
+							<option disabled>Choose Gender</option>
+							<option value="Laki - Laki">Laki - Laki</option>
+							<option value="Perempuan">Perempuan</option>
+						</select>
 					</div>
 				</div>
 				<div className={styled.inputWrapper}>
 					<div className={`${styled.inputBox} group`}>
 						<input
 							type="tel"
-							pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-							name="floating_phone"
-							id="floating_phone"
+							// pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+							name="phone"
+							id="phone"
 							className={`${styled.input} peer`}
 							placeholder=" "
+							autoComplete="off"
+							onChange={e => handlePhone(e.target.value)}
 							required
 						/>
 						<label
-							htmlFor="floating_phone"
+							htmlFor="phone"
 							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
 							Phone number
 						</label>
@@ -105,14 +200,16 @@ export default function AddUser() {
 					<div className={styled.inputBox}>
 						<input
 							type="text"
-							name="floating_company"
-							id="floating_company"
+							name="address"
+							id="address"
 							className={`${styled.input} peer`}
+							autoComplete="off"
+							onChange={e => handleAddress(e.target.value)}
 							placeholder=" "
 							required
 						/>
 						<label
-							htmlFor="floating_company"
+							htmlFor="address"
 							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
 							Address
 						</label>
@@ -126,12 +223,13 @@ export default function AddUser() {
 						<select
 							id="select_class"
 							className={`${styled.select} peer`}
+							onChange={e => handleClass(e.target.value)}
 							defaultValue="Choose Class">
 							<option disabled>Choose Class</option>
-							<option value="US">Pagi 1</option>
-							<option value="CA">Pagi 2</option>
-							<option value="FR">Siang 1</option>
-							<option value="DE">Siang 2</option>
+							<option value="Pagi 1">Pagi 1</option>
+							<option value="Pagi 2">Pagi 2</option>
+							<option value="Siang 1">Siang 1</option>
+							<option value="Siang 2">Siang 2</option>
 						</select>
 					</div>
 					<div className={`${styled.inputBox} group`}>
@@ -141,12 +239,13 @@ export default function AddUser() {
 						<select
 							id="select_teacher"
 							className={`${styled.select} peer`}
+							onChange={e => handleTeacher(e.target.value)}
 							defaultValue="Choose Teacher">
 							<option disabled>Choose Teacher</option>
-							<option value="US">Aimanurrofi</option>
-							<option value="CA">Doyok Nana</option>
-							<option value="FR">Ujang Lima</option>
-							<option value="DE">Sri Nurwati</option>
+							<option value="Aimanurrofi">Aimanurrofi</option>
+							<option value="Doyok Nana">Doyok Nana</option>
+							<option value="Ujang Lima">Ujang Lima</option>
+							<option value="Sri Nurwati">Sri Nurwati</option>
 						</select>
 					</div>
 				</div>
@@ -154,14 +253,16 @@ export default function AddUser() {
 					<div className="relative z-0 w-full mb-6 group">
 						<input
 							type="password"
-							name="floating_password"
-							id="floating_password"
+							name="password"
+							id="password"
 							className={`${styled.input} peer`}
 							placeholder=" "
+							autoComplete="off"
+							onChange={e => handlePassword(e.target.value)}
 							required
 						/>
 						<label
-							htmlFor="floating_password"
+							htmlFor="password"
 							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
 							Password
 						</label>
@@ -169,20 +270,22 @@ export default function AddUser() {
 					<div className="relative z-0 w-full mb-6 group">
 						<input
 							type="password"
-							name="repeat_password"
-							id="floating_repeat_password"
+							name="confPassword"
+							id="confPassword"
 							className={`${styled.input} peer`}
 							placeholder=" "
+							autoComplete="off"
+							onChange={e => handleConfPassword(e.target.value)}
 							required
 						/>
 						<label
-							htmlFor="floating_repeat_password"
+							htmlFor="confPassword"
 							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
 							Confirm password
 						</label>
 					</div>
 				</div>
-				<button type="submit" className={styled.button}>
+				<button type="submit" className={styled.button} onClick={() => submit()}>
 					Submit
 				</button>
 			</form>
