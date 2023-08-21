@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/utils/firebase";
 import Image from "next/image";
@@ -8,106 +8,97 @@ import styled from "./page.module.css";
 
 export default function AddUser() {
 	const [file, setFile] = useState();
-	const [image, setImage] = useState()
+	const [image, setImage] = useState();
 	const [data, setData] = useState({
 		name: "",
 		gender: "",
-		userClass: "",
+		studentClass: "",
 		teacher: "",
-		phone: "",
+		phoneNumber: "",
 		address: "",
 		password: "",
 		confPassword: "",
-		image: ""
-	})
-
-	const handleName = e => {
-		setData(prev => ({...prev, name: e}))
-	}
-
-	const handleGender = e => {
-		setData(prev => ({...prev, gender: e}))
-	}
-
-	const handleClass = e => {
-		setData(prev => ({...prev, userClass: e}))
-	}
-
-	const handleTeacher = e => {
-		setData(prev => ({...prev, teacher: e}))
-	}
-
-	const handlePhone = e => {
-		setData(prev => ({...prev, phone: e}))
-	}
-
-	const handleAddress = e => {
-		setData(prev => ({...prev, address: e}))
-	}
-
-	const handlePassword = e => {
-		setData(prev => ({...prev, password: e}))
-	}
-
-	const handleConfPassword = e => {
-		setData(prev => ({...prev, confPassword: e}))
-	}
+		imageURL: "",
+	});
 
 	const handleImage = e => {
-		setImage(e.target.files[0])
+		setImage(e.target.files[0]);
 		setFile(URL.createObjectURL(e.target.files[0]));
-	}
+	};
 
-	async function submit() {
-		// const selectedFile = e.target.files[0];
-		// console.log(selectedFile)
-		await fetch("/api/users", {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json',
-			  },
-			body: JSON.stringify(data)
-		})
-		console.log({data})
-		if (image) {
-			const storageRef = ref(storage, image.name);
-			const uploadTask = uploadBytesResumable(storageRef, image);
+	const requestData = async () => {
+		try {
+			if (image) {
+				const storageRef = ref(storage, image.name);
+				const uploadTask = uploadBytesResumable(storageRef, image);
 
-			uploadTask.on(
-				"state_changed",
-				snapshot => {
-					const progress =
-						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-					console.log("Upload is " + progress + "% done");
-					switch (snapshot.state) {
-						case "paused":
-							console.log("Upload is paused");
-							break;
-						case "running":
-							console.log("Upload is running");
-							break;
-						default:
-							break;
+				uploadTask.on(
+					"state_changed",
+					snapshot => {
+						const progress =
+							(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+						console.log("Upload is " + progress + "% done");
+						switch (snapshot.state) {
+							case "paused":
+								console.log("Upload is paused");
+								break;
+							case "running":
+								console.log("Upload is running");
+								break;
+							default:
+								break;
+						}
+					},
+					error => {
+						console.log(error);
+					},
+					async () => {
+						try {
+							const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+							setData(prev => ({ ...prev, imageURL: downloadURL }));
+
+							const response = await fetch("/api/users", {
+								method: "POST",
+								body: JSON.stringify({
+									name: data.name,
+									gender: data.gender,
+									studentClass: data.studentClass,
+									teacher: data.teacher,
+									phoneNumber: data.phoneNumber,
+									address: data.address,
+									password: data.password,
+									confPassword: data.confPassword,
+									imageURL: downloadURL,
+								}),
+								headers: {
+									"Content-Type": "application/json",
+								},
+							});
+
+							if (response.ok) {
+								console.log("Request success:", response);
+								// Lakukan tindakan lain jika permintaan berhasil
+							} else {
+								console.log("Server error:", response);
+								// Anda dapat melakukan sesuatu dengan respons server yang mengandung pesan kesalahan
+							}
+						} catch (error) {
+							console.log("Error:", error);
+						}
 					}
-				},
-				error => {
-					console.log(error);
-				},
-				() => {
-					getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-						setData(prev => ({...prev, image: downloadURL}))
-					});
-				}
-			);
+				);
+			}
+		} catch (error) {
+			console.log("Error:", error);
 		}
-	}
+	};
 
 	return (
 		<div className={styled.container}>
 			<div className={styled.headerWrapper}>
 				<h2 className={styled.header}>Add Student</h2>
 			</div>
-			<form className={styled.form}>
+			<div className={styled.form}>
 				<div className={styled.imageWrapper}>
 					<div className={styled.image}>
 						{!file ? (
@@ -154,7 +145,9 @@ export default function AddUser() {
 							className={`${styled.input} peer`}
 							autoComplete="off"
 							placeholder=" "
-							onChange={(e) => handleName(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, name: e.target.value }))
+							}
 							required
 						/>
 						<label
@@ -170,7 +163,9 @@ export default function AddUser() {
 						<select
 							id="select_gender"
 							className={`${styled.select} peer`}
-							onChange={e => handleGender(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, gender: e.target.value }))
+							}
 							defaultValue="Choose Gender">
 							<option disabled>Choose Gender</option>
 							<option value="Laki - Laki">Laki - Laki</option>
@@ -188,7 +183,9 @@ export default function AddUser() {
 							className={`${styled.input} peer`}
 							placeholder=" "
 							autoComplete="off"
-							onChange={e => handlePhone(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, phoneNumber: e.target.value }))
+							}
 							required
 						/>
 						<label
@@ -204,7 +201,9 @@ export default function AddUser() {
 							id="address"
 							className={`${styled.input} peer`}
 							autoComplete="off"
-							onChange={e => handleAddress(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, address: e.target.value }))
+							}
 							placeholder=" "
 							required
 						/>
@@ -223,7 +222,9 @@ export default function AddUser() {
 						<select
 							id="select_class"
 							className={`${styled.select} peer`}
-							onChange={e => handleClass(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, studentClass: e.target.value }))
+							}
 							defaultValue="Choose Class">
 							<option disabled>Choose Class</option>
 							<option value="Pagi 1">Pagi 1</option>
@@ -239,7 +240,9 @@ export default function AddUser() {
 						<select
 							id="select_teacher"
 							className={`${styled.select} peer`}
-							onChange={e => handleTeacher(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, teacher: e.target.value }))
+							}
 							defaultValue="Choose Teacher">
 							<option disabled>Choose Teacher</option>
 							<option value="Aimanurrofi">Aimanurrofi</option>
@@ -258,7 +261,9 @@ export default function AddUser() {
 							className={`${styled.input} peer`}
 							placeholder=" "
 							autoComplete="off"
-							onChange={e => handlePassword(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, password: e.target.value }))
+							}
 							required
 						/>
 						<label
@@ -275,7 +280,9 @@ export default function AddUser() {
 							className={`${styled.input} peer`}
 							placeholder=" "
 							autoComplete="off"
-							onChange={e => handleConfPassword(e.target.value)}
+							onChange={e =>
+								setData(prev => ({ ...prev, confPassword: e.target.value }))
+							}
 							required
 						/>
 						<label
@@ -285,10 +292,13 @@ export default function AddUser() {
 						</label>
 					</div>
 				</div>
-				<button type="submit" className={styled.button} onClick={() => submit()}>
+				<button
+					// type="submit"
+					className={styled.button}
+					onClick={() => requestData()}>
 					Submit
 				</button>
-			</form>
+			</div>
 		</div>
 	);
 }
