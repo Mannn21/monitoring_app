@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/utils/firebase";
 import Image from "next/image";
@@ -21,6 +23,19 @@ export default function AddUser() {
 		imageURL: "",
 	});
 
+	const nameRef = useRef();
+	const genderRef = useRef();
+	const classRef = useRef();
+	const teacherRef = useRef();
+	const phoneNumberRef = useRef();
+	const addressRef = useRef();
+	const passwordRef = useRef();
+	const confPasswordRef = useRef();
+	const imageRef = useRef(null);
+
+	let timerInterval;
+	const MySwal = withReactContent(Swal);
+
 	const handleImage = e => {
 		setImage(e.target.files[0]);
 		setFile(URL.createObjectURL(e.target.files[0]));
@@ -32,61 +47,91 @@ export default function AddUser() {
 				const storageRef = ref(storage, image.name);
 				const uploadTask = uploadBytesResumable(storageRef, image);
 
-				uploadTask.on(
-					"state_changed",
-					snapshot => {
-						const progress =
-							(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-						console.log("Upload is " + progress + "% done");
-						switch (snapshot.state) {
-							case "paused":
-								console.log("Upload is paused");
-								break;
-							case "running":
-								console.log("Upload is running");
-								break;
-							default:
-								break;
-						}
-					},
-					error => {
-						console.log(error);
-					},
-					async () => {
-						try {
-							const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-							setData(prev => ({ ...prev, imageURL: downloadURL }));
+				MySwal.fire({
+					title: "Upload sedang berlangsung",
+					html: "Progress: <b>0%</b>",
+					allowEscapeKey: false,
+					allowOutsideClick: false,
+					didOpen: () => {
+						MySwal.showLoading();
+						const b = Swal.getHtmlContainer().querySelector("b");
+						uploadTask.on(
+							"state_changed",
+							snapshot => {
+								const progress =
+									(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+								b.innerHTML = `Progress: <b>${Math.round(progress)}%</b>`;
+							},
+							error => {
+								console.log(error);
+								MySwal.close();
+							},
+							async () => {
+								try {
+									const downloadURL = await getDownloadURL(
+										uploadTask.snapshot.ref
+									);
+									setData(prev => ({ ...prev, imageURL: downloadURL }));
 
-							const response = await fetch("/api/users", {
-								method: "POST",
-								body: JSON.stringify({
-									name: data.name,
-									gender: data.gender,
-									studentClass: data.studentClass,
-									teacher: data.teacher,
-									phoneNumber: data.phoneNumber,
-									address: data.address,
-									password: data.password,
-									confPassword: data.confPassword,
-									imageURL: downloadURL,
-								}),
-								headers: {
-									"Content-Type": "application/json",
-								},
-							});
+									const response = await fetch("/api/users", {
+										method: "POST",
+										body: JSON.stringify({
+											name: data.name,
+											gender: data.gender,
+											studentClass: data.studentClass,
+											teacher: data.teacher,
+											phoneNumber: data.phoneNumber,
+											address: data.address,
+											password: data.password,
+											confPassword: data.confPassword,
+											imageURL: downloadURL,
+										}),
+										headers: {
+											"Content-Type": "application/json",
+										},
+									});
 
-							if (response.ok) {
-								console.log("Request success:", response);
-								// Lakukan tindakan lain jika permintaan berhasil
-							} else {
-								console.log("Server error:", response);
-								// Anda dapat melakukan sesuatu dengan respons server yang mengandung pesan kesalahan
+									if (response.ok) {
+										await MySwal.fire({
+											title: "User Berhasil Dibuat",
+											icon: "success",
+											timer: 2000,
+											showConfirmButton: false,
+										});
+										nameRef.current.value = "";
+										genderRef.current.value = "";
+										classRef.current.value = "";
+										teacherRef.current.value = "";
+										phoneNumberRef.current.value = "";
+										addressRef.current.value = "";
+										passwordRef.current.value = "";
+										confPasswordRef.current.value = "";
+										imageRef.current.value = null;
+										setFile(null);
+										setImage("");
+									} else {
+										await MySwal.fire({
+											title: "Data Gagal Dibuat",
+											icon: "error",
+											timer: 2000,
+											showConfirmButton: false,
+										});
+									}
+								} catch (error) {
+									await MySwal.fire({
+										title: error,
+										icon: "error",
+										timer: 2000,
+										showConfirmButton: false,
+									});
+									console.log("Error:", error);
+								} finally {
+									MySwal.close();
+								}
 							}
-						} catch (error) {
-							console.log("Error:", error);
-						}
-					}
-				);
+						);
+					},
+				});
 			}
 		} catch (error) {
 			console.log("Error:", error);
@@ -129,7 +174,10 @@ export default function AddUser() {
 						aria-describedby="user_avatar_help"
 						id="user_avatar"
 						type="file"
-						onChange={e => handleImage(e)}
+						ref={imageRef}
+						onChange={e => {
+							handleImage(e);
+						}}
 					/>
 					<div className={styled.textImage} id="user_avatar_help">
 						A profile picture is useful to confirm your are logged into your
@@ -144,6 +192,7 @@ export default function AddUser() {
 							id="name"
 							className={`${styled.input} peer`}
 							autoComplete="off"
+							ref={nameRef}
 							placeholder=" "
 							onChange={e =>
 								setData(prev => ({ ...prev, name: e.target.value }))
@@ -162,6 +211,7 @@ export default function AddUser() {
 						</label>
 						<select
 							id="select_gender"
+							ref={genderRef}
 							className={`${styled.select} peer`}
 							onChange={e =>
 								setData(prev => ({ ...prev, gender: e.target.value }))
@@ -177,6 +227,7 @@ export default function AddUser() {
 					<div className={`${styled.inputBox} group`}>
 						<input
 							type="tel"
+							ref={phoneNumberRef}
 							// pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
 							name="phone"
 							id="phone"
@@ -199,6 +250,7 @@ export default function AddUser() {
 							type="text"
 							name="address"
 							id="address"
+							ref={addressRef}
 							className={`${styled.input} peer`}
 							autoComplete="off"
 							onChange={e =>
@@ -221,6 +273,7 @@ export default function AddUser() {
 						</label>
 						<select
 							id="select_class"
+							ref={classRef}
 							className={`${styled.select} peer`}
 							onChange={e =>
 								setData(prev => ({ ...prev, studentClass: e.target.value }))
@@ -239,6 +292,7 @@ export default function AddUser() {
 						</label>
 						<select
 							id="select_teacher"
+							ref={teacherRef}
 							className={`${styled.select} peer`}
 							onChange={e =>
 								setData(prev => ({ ...prev, teacher: e.target.value }))
@@ -258,6 +312,7 @@ export default function AddUser() {
 							type="password"
 							name="password"
 							id="password"
+							ref={passwordRef}
 							className={`${styled.input} peer`}
 							placeholder=" "
 							autoComplete="off"
@@ -277,6 +332,7 @@ export default function AddUser() {
 							type="password"
 							name="confPassword"
 							id="confPassword"
+							ref={confPasswordRef}
 							className={`${styled.input} peer`}
 							placeholder=" "
 							autoComplete="off"

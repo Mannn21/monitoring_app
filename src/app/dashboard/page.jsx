@@ -31,7 +31,7 @@ export default function Page() {
 								<BiSolidChalkboard size={22} />
 								<h3>Class Name</h3>
 							</div>
-							<spa className={styled.span}>Pagi 1</spa>
+							<span className={styled.span}>Pagi 1</span>
 						</div>
 						<div>
 							<div className={styled.iconWrapper}>
@@ -80,7 +80,7 @@ export default function Page() {
 				</div>
 				<div className={`${styled.section} ${styled.details}`}>
 					<h2 className={styled.headerSection}>My Details</h2>
-					<div div className={styled.detailWrapper}>
+					<div className={styled.detailWrapper}>
 						<div>
 							<div className={styled.iconWrapper}>
 								<AiFillIdcard size={22} />

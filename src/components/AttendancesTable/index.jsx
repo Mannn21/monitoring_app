@@ -77,7 +77,7 @@ const AttendancesMap = () => {
 							autoComplete="off"
 							className={styled.numberInput}
 						/>
-						<label for="checkbox-table-1" className="sr-only">
+						<label htmlFor="checkbox-table-1" className="sr-only">
 							Grade
 						</label>
 					</div>
@@ -91,7 +91,7 @@ const AttendancesMap = () => {
 							autoComplete="off"
 							className={styled.input}
 						/>
-						<label for="checkbox-table-1" className="sr-only">
+						<label htmlFor="checkbox-table-1" className="sr-only">
 							Attitude
 						</label>
 					</div>

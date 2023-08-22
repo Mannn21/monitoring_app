@@ -87,8 +87,7 @@ export const POST = async (req) => {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.log(error)
-		// return NextResponse.json({ Error: error }, { status: 500 });
+		return NextResponse.json({ Error: error }, { status: 500 });
 	}
 };
 
@@ -147,11 +146,11 @@ export const PUT = async (req, res) => {
 }
 
 export const DELETE = async (req, res) => {
-	const { phoneNumber } = await req.json();
+	const { studentId } = await req.json();
 	try {
 		const q = query(
 			collection(db, "students"),
-			where("phoneNumber", "==", phoneNumber)
+			where("studentId", "==", studentId)
 		);
 		const datas = await getDocs(q);
 		const data = [];

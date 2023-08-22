@@ -10,7 +10,7 @@ export default function Page() {
 					<input
 						type="text"
 						id="small-input"
-                        placeholder="Search Users...."
+						placeholder="Search Users...."
 						className={styled.searchInput}
 					/>
 				</div>
@@ -27,13 +27,13 @@ export default function Page() {
 									Name
 								</th>
 								<th scope="col" className="px-6 py-5 bg-lime-500">
-									Address
+									Gender
 								</th>
 								<th scope="col" className="px-6 py-5 bg-amber-500">
-									Phone Number
+									Address
 								</th>
 								<th scope="col" className="px-6 py-5 bg-rose-500">
-									Status
+									Phone Number
 								</th>
 								<th scope="col" className="px-6 py-5 text-center bg-teal-500">
 									Edit
