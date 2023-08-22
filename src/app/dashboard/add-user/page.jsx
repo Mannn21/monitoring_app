@@ -3,7 +3,13 @@
 import { useState, useRef } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+	ref,
+	uploadBytesResumable,
+	getDownloadURL,
+	getStorage,
+	listAll,
+} from "firebase/storage";
 import { storage } from "@/utils/firebase";
 import Image from "next/image";
 import styled from "./page.module.css";
@@ -21,6 +27,7 @@ export default function AddUser() {
 		password: "",
 		confPassword: "",
 		imageURL: "",
+		imageName: "",
 	});
 
 	const nameRef = useRef();
@@ -33,7 +40,6 @@ export default function AddUser() {
 	const confPasswordRef = useRef();
 	const imageRef = useRef(null);
 
-	let timerInterval;
 	const MySwal = withReactContent(Swal);
 
 	const handleImage = e => {
@@ -44,97 +50,138 @@ export default function AddUser() {
 	const requestData = async () => {
 		try {
 			if (image) {
-				const storageRef = ref(storage, image.name);
-				const uploadTask = uploadBytesResumable(storageRef, image);
-
-				MySwal.fire({
-					title: "Upload sedang berlangsung",
-					html: "Progress: <b>0%</b>",
-					allowEscapeKey: false,
-					allowOutsideClick: false,
-					didOpen: () => {
-						MySwal.showLoading();
-						const b = Swal.getHtmlContainer().querySelector("b");
-						uploadTask.on(
-							"state_changed",
-							snapshot => {
-								const progress =
-									(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-								b.innerHTML = `Progress: <b>${Math.round(progress)}%</b>`;
-							},
-							error => {
-								console.log(error);
-								MySwal.close();
-							},
-							async () => {
-								try {
-									const downloadURL = await getDownloadURL(
-										uploadTask.snapshot.ref
-									);
-									setData(prev => ({ ...prev, imageURL: downloadURL }));
-
-									const response = await fetch("/api/users", {
-										method: "POST",
-										body: JSON.stringify({
-											name: data.name,
-											gender: data.gender,
-											studentClass: data.studentClass,
-											teacher: data.teacher,
-											phoneNumber: data.phoneNumber,
-											address: data.address,
-											password: data.password,
-											confPassword: data.confPassword,
-											imageURL: downloadURL,
-										}),
-										headers: {
-											"Content-Type": "application/json",
-										},
-									});
-
-									if (response.ok) {
-										await MySwal.fire({
-											title: "User Berhasil Dibuat",
-											icon: "success",
-											timer: 2000,
-											showConfirmButton: false,
-										});
-										nameRef.current.value = "";
-										genderRef.current.value = "";
-										classRef.current.value = "";
-										teacherRef.current.value = "";
-										phoneNumberRef.current.value = "";
-										addressRef.current.value = "";
-										passwordRef.current.value = "";
-										confPasswordRef.current.value = "";
-										imageRef.current.value = null;
-										setFile(null);
-										setImage("");
-									} else {
-										await MySwal.fire({
-											title: "Data Gagal Dibuat",
-											icon: "error",
-											timer: 2000,
-											showConfirmButton: false,
-										});
-									}
-								} catch (error) {
-									await MySwal.fire({
-										title: error,
-										icon: "error",
-										timer: 2000,
-										showConfirmButton: false,
-									});
-									console.log("Error:", error);
-								} finally {
-									MySwal.close();
-								}
-							}
+				const listRef = ref(storage);
+				listAll(listRef)
+					.then(res => {
+						const foundReference = res.items.find(
+							item => item._location.path_ === `${data.phoneNumber}${data.name}`
 						);
-					},
-				});
+						if (foundReference !== undefined)
+							return MySwal.fire({
+								title: "Data Already Exist",
+								icon: "error",
+								timer: 2000,
+								showConfirmButton: false,
+							});
+						if (foundReference === undefined) {
+							const storageRef = ref(
+								storage,
+								`${data.phoneNumber}${data.name}`
+							);
+							const uploadTask = uploadBytesResumable(storageRef, image);
+							MySwal.fire({
+								title: "Upload sedang berlangsung",
+								html: "Progress: <b>0%</b>",
+								allowEscapeKey: false,
+								allowOutsideClick: false,
+								didOpen: () => {
+									MySwal.showLoading();
+									const b = Swal.getHtmlContainer().querySelector("b");
+									uploadTask.on(
+										"state_changed",
+										snapshot => {
+											const progress =
+												(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+											b.innerHTML = `Progress: <b>${Math.round(progress)}%</b>`;
+										},
+										error => {
+											MySwal.fire({
+												title: error,
+												icon: "error",
+												timer: 2000,
+												showConfirmButton: false,
+											});
+										},
+										async () => {
+											try {
+												const downloadURL = await getDownloadURL(
+													uploadTask.snapshot.ref
+												);
+												setData(prev => ({ ...prev, imageURL: downloadURL }));
+
+												const response = await fetch("/api/users", {
+													method: "POST",
+													body: JSON.stringify({
+														name: data.name,
+														gender: data.gender,
+														studentClass: data.studentClass,
+														teacher: data.teacher,
+														phoneNumber: data.phoneNumber,
+														address: data.address,
+														password: data.password,
+														confPassword: data.confPassword,
+														imageURL: downloadURL,
+														imageName: `${data.phoneNumber}${data.name}`,
+													}),
+													headers: {
+														"Content-Type": "application/json",
+													},
+												});
+
+												if (response.ok) {
+													await MySwal.fire({
+														title: "User Berhasil Dibuat",
+														icon: "success",
+														timer: 2000,
+														showConfirmButton: false,
+													});
+													nameRef.current.value = "";
+													genderRef.current.value = "";
+													classRef.current.value = "";
+													teacherRef.current.value = "";
+													phoneNumberRef.current.value = "";
+													addressRef.current.value = "";
+													passwordRef.current.value = "";
+													confPasswordRef.current.value = "";
+													imageRef.current.value = null;
+													setFile(null);
+													setImage("");
+												} else {
+													await MySwal.fire({
+														title: "Data Gagal Dibuat",
+														icon: "error",
+														timer: 2000,
+														showConfirmButton: false,
+													});
+												}
+											} catch (error) {
+												await MySwal.fire({
+													title: error,
+													icon: "error",
+													timer: 2000,
+													showConfirmButton: false,
+												});
+												MySwal.fire({
+													title: error,
+													icon: "error",
+													timer: 2000,
+													showConfirmButton: false,
+												});
+											} finally {
+												MySwal.close();
+											}
+										}
+									);
+								},
+							});
+						}
+					})
+					.catch(error => {
+						MySwal.fire({
+							title: error,
+							icon: "error",
+							timer: 2000,
+							showConfirmButton: false,
+						});
+					});
 			}
 		} catch (error) {
-			console.log("Error:", error);
+			await MySwal.fire({
+				title: error,
+				icon: "error",
+				timer: 2000,
+				showConfirmButton: false,
+			});
 		}
 	};
 
