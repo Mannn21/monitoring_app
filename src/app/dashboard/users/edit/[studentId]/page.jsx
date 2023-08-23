@@ -166,7 +166,7 @@ export default function Page({ params }) {
 	return (
 		<div className={styled.container}>
 			<div className={styled.headerWrapper}>
-				<h2 className={styled.header}>Add Student</h2>
+				<h2 className={styled.header}>Edit Student</h2>
 			</div>
 			<div className={styled.form}>
 				<div className={styled.imageWrapper}>
