@@ -2,11 +2,7 @@ import {
 	doc,
 	setDoc,
 	getDocs,
-	updateDoc,
 	collection,
-	query,
-	where,
-	deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/utils/firebase";
 import { NextResponse } from "next/server";
@@ -88,89 +84,6 @@ export const POST = async req => {
 		);
 	} catch (error) {
 		console.log(error);
-		return NextResponse.json({ Error: error }, { status: 500 });
-	}
-};
-
-export const PUT = async (req, res) => {
-	const { phoneNumber, password, newPassword, confirmPassword } =
-		await req.json();
-	try {
-		if (!password || !newPassword || !confirmPassword)
-			return NextResponse.json(
-				{ message: "No Data Requirement" },
-				{ status: 400 }
-			);
-		if (password && newPassword && confirmPassword) {
-			const q = query(
-				collection(db, "students"),
-				where("phoneNumber", "==", phoneNumber)
-			);
-			const datas = await getDocs(q);
-			const data = [];
-			datas.forEach(doc => {
-				data.push({
-					id: doc.id,
-					...doc.data(),
-				});
-			});
-			if (data.length < 1)
-				return NextResponse.json(
-					{ message: "No Datas Student" },
-					{ status: 200 }
-				);
-			if (data.length >= 1) {
-				const user = data.filter(item => item.phoneNumber === phoneNumber);
-				if (user.length < 1)
-					return NextResponse.json(
-						{ message: "No Datas Student" },
-						{ status: 200 }
-					);
-				if (user.length >= 1) {
-					if (newPassword !== confirmPassword)
-						return NextResponse.json(
-							{ message: "Confirm Password Not Compare" },
-							{ status: 400 }
-						);
-					const checkOldPassword = await bcrypt.compare(
-						confirmPassword,
-						user[0].password
-					);
-					if (checkOldPassword)
-						return NextResponse.json(
-							{ message: "Password Up To Date" },
-							{ status: 200 }
-						);
-					if (!checkOldPassword) {
-						const checkPassword = await bcrypt.compare(
-							password,
-							user[0].password
-						);
-						if (!checkPassword)
-							return NextResponse.json(
-								{ message: "Wrong Password" },
-								{ status: 400 }
-							);
-						if (checkPassword) {
-							const salt = await bcrypt.genSalt(10);
-							const encryptedPassword = await bcrypt.hash(
-								confirmPassword,
-								salt
-							);
-							const updateStudent = doc(db, "students", user[0].id);
-							const student = await updateDoc(updateStudent, {
-								password: encryptedPassword,
-							});
-							return NextResponse.json(
-								{ message: "Update Students Success", student },
-								{ status: 200 }
-							);
-						}
-					}
-				}
-			}
-		}
-	} catch (error) {
 		return NextResponse.json({ Error: error }, { status: 500 });
 	}
 };

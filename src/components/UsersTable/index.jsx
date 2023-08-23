@@ -55,7 +55,6 @@ const UsersMap = () => {
 					const response = await fetch(`/api/users/${studentId}`, {
 						method: "DELETE"
 					});
-					console.log(response)
 					swalLoading.close();
 
 					if (response.status === 200) {
@@ -111,7 +110,7 @@ const UsersMap = () => {
 				<td className="px-6 py-4">{user.address}</td>
 				<td className="px-6 py-4">{user.phoneNumber}</td>
 				<td className="px-6 py-4">
-					<a href="#" className={styled.edit}>
+					<a href={`/dashboard/users/edit/${user.studentId}`} className={styled.edit}>
 						<AiFillEdit size={20} />
 					</a>
 				</td>

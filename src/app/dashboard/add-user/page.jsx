@@ -126,9 +126,9 @@ export default function AddUser() {
 														showConfirmButton: false,
 													});
 													nameRef.current.value = "";
-													genderRef.current.value = "";
-													classRef.current.value = "";
-													teacherRef.current.value = "";
+													genderRef.current.value = "Choose Gender";
+													classRef.current.value = "Choose Class";
+													teacherRef.current.value = "Choose Teacher";
 													phoneNumberRef.current.value = "";
 													addressRef.current.value = "";
 													passwordRef.current.value = "";
@@ -150,13 +150,7 @@ export default function AddUser() {
 													icon: "error",
 													timer: 2000,
 													showConfirmButton: false,
-												});
-												MySwal.fire({
-													title: error,
-													icon: "error",
-													timer: 2000,
-													showConfirmButton: false,
-												});
+												})
 											} finally {
 												MySwal.close();
 											}
