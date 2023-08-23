@@ -2,6 +2,8 @@ import styled from "./page.module.css";
 import UsersMap from "@/components/UsersTable";
 
 export default function Page() {
+
+
 	return (
 		<div className={styled.container}>
 			<div className={styled.headerWrapper}>

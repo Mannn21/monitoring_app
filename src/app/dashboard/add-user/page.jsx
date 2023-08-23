@@ -275,7 +275,6 @@ export default function AddUser() {
 						<input
 							type="tel"
 							ref={phoneNumberRef}
-							// pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
 							name="phone"
 							id="phone"
 							className={`${styled.input} peer`}

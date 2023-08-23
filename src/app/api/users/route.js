@@ -19,7 +19,7 @@ export const GET = async () => {
 		const data = [];
 		datas.forEach(doc => {
 			const docData = doc.data();
-			const { password, studentId, ...restData } = docData;
+			const { password, ...restData } = docData;
 
 			data.push({
 				id: doc.id,
@@ -35,7 +35,7 @@ export const GET = async () => {
 	}
 };
 
-export const POST = async (req) => {
+export const POST = async req => {
 	const {
 		imageURL,
 		name,
@@ -87,8 +87,8 @@ export const POST = async (req) => {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.log(error)
-		// return NextResponse.json({ Error: error }, { status: 500 });
+		console.log(error);
+		return NextResponse.json({ Error: error }, { status: 500 });
 	}
 };
 
@@ -168,46 +168,6 @@ export const PUT = async (req, res) => {
 						}
 					}
 				}
-			}
-		}
-	} catch (error) {
-		return NextResponse.json({ Error: error }, { status: 500 });
-	}
-};
-
-export const DELETE = async (req, res) => {
-	const { studentId } = await req.json();
-	try {
-		const q = query(
-			collection(db, "students"),
-			where("studentId", "==", studentId)
-		);
-		const datas = await getDocs(q);
-		const data = [];
-		datas.forEach(doc => {
-			data.push({
-				id: doc.id,
-				...doc.data(),
-			});
-		});
-		if (data.length < 1)
-			return NextResponse.json(
-				{ message: "No Datas Student" },
-				{ status: 200 }
-			);
-		if (data.length >= 1) {
-			const user = data.filter(item => item.phoneNumber === phoneNumber);
-			if (user.length < 1)
-				return NextResponse.json(
-					{ message: "No Datas Student" },
-					{ status: 200 }
-				);
-			if (user.length >= 1) {
-				deleteDoc(doc(db, "students", user[0].id));
-				return NextResponse.json(
-					{ message: "Delete Student Success" },
-					{ status: 200 }
-				);
 			}
 		}
 	} catch (error) {
