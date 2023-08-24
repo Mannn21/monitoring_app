@@ -37,7 +37,9 @@ export const GET = async (req, context) => {
 			const data = {
 				name: user[0].name,
 				gender: user[0].gender,
-				image: user[0].imageURL,
+				image: {
+					URL: user[0].image.URL
+				},
 				phoneNumber: user[0].phoneNumber,
 				address: user[0].address,
 				class: {
@@ -105,7 +107,7 @@ export const DELETE = async (req, context) => {
 export const POST = async (req, context) => {
 	const { params } = context;
 	const studentId = params.studentId;
-	const { phoneNumber, name, gender, address, studentClass, teacher, password } =
+	const { phoneNumber, name, gender, address, studentClass, teacher, password, imageURL, imageName } =
 		await req.json();
 
 	try {
@@ -155,6 +157,10 @@ export const POST = async (req, context) => {
 								class: {
 									studentClass,
 									teacher
+								},
+								image: {
+									URL: imageURL,
+									name: imageName
 								}
 							});
 							return NextResponse.json(

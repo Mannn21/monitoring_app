@@ -7,7 +7,6 @@ import {
 	ref,
 	uploadBytesResumable,
 	getDownloadURL,
-	getStorage,
 	listAll,
 } from "firebase/storage";
 import { storage } from "@/utils/firebase";

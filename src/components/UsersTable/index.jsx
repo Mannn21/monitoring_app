@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -53,7 +54,7 @@ const UsersMap = () => {
 
 				try {
 					const response = await fetch(`/api/users/${studentId}`, {
-						method: "DELETE"
+						method: "DELETE",
 					});
 					swalLoading.close();
 
@@ -77,7 +78,7 @@ const UsersMap = () => {
 				<th className="px-3 py-4 text-center">{index + 1}</th>
 				<th scope="row" className={styled.head}>
 					<Image
-						src={user.imageURL}
+						src={user.image.URL}
 						height={30}
 						width={30}
 						alt={user.name}
@@ -110,9 +111,11 @@ const UsersMap = () => {
 				<td className="px-6 py-4">{user.address}</td>
 				<td className="px-6 py-4">{user.phoneNumber}</td>
 				<td className="px-6 py-4">
-					<a href={`/dashboard/users/edit/${user.studentId}`} className={styled.edit}>
+					<Link
+						href={`/dashboard/users/edit/${user.studentId}`}
+						className={styled.edit}>
 						<AiFillEdit size={20} />
-					</a>
+					</Link>
 				</td>
 				<td className="px-6 py-4 flex justify-center items-center">
 					<button

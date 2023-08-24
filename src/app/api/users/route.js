@@ -34,6 +34,7 @@ export const GET = async () => {
 export const POST = async req => {
 	const {
 		imageURL,
+		imageName,
 		name,
 		gender,
 		phoneNumber,
@@ -57,26 +58,32 @@ export const POST = async req => {
 			gender,
 			studentId: uuidv4(),
 			phoneNumber,
-			imageURL,
 			address,
+			password: encryptedPassword,
 			class: {
 				studentClass,
 				teacher,
 			},
-			password: encryptedPassword,
+			image: {
+				URL: imageURL,
+				name: imageName 
+			},
 		};
 		const studentRef = doc(db, "students", uuidv4());
 		await setDoc(studentRef, studentData);
 		const data = {
 			name,
 			gender,
-			imageURL,
 			phoneNumber,
 			address,
 			class: {
 				studentClass,
 				teacher,
 			},
+			image: {
+				URL: imageURL,
+				name: imageName 
+			}
 		};
 		return NextResponse.json(
 			{ message: "Created Student is Success", data },

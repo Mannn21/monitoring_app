@@ -1,5 +1,7 @@
 "use client";
 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "@/utils/firebase";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -9,17 +11,20 @@ import styled from "./page.module.css";
 export default function Page({ params }) {
 	const [file, setFile] = useState();
 	const [image, setImage] = useState();
+	const [value, setValue] = useState();
 	const [data, setData] = useState({
 		name: "",
-		gender: "",
-		studentClass: "",
-		teacher: "",
+		gender: "Choose Gender",
+		studentClass: "Choose Class",
+		teacher: "Choose Teacher",
 		phoneNumber: "",
 		address: "",
 		imageURL: "",
 		password: "",
+		imageURL: "",
 		imageName: "",
 	});
+
 
 	const getUser = useCallback(async () => {
 		const response = await fetch(`/api/users/${params.studentId}`);
@@ -31,10 +36,10 @@ export default function Page({ params }) {
 			studentClass: datas.data.class.studentClass,
 			teacher: datas.data.class.teacher,
 			address: datas.data.address,
-			imageURL: datas.data.image,
+			imageURL: datas.data.image.URL,
 			phoneNumber: datas.data.phoneNumber,
 		}));
-		setFile(datas.data.image);
+		setFile(datas.data.image.URL);
 	}, [params.studentId]);
 
 	useEffect(() => {
@@ -44,111 +49,143 @@ export default function Page({ params }) {
 	const MySwal = withReactContent(Swal);
 
 	const submit = async () => {
-        try {
-            MySwal.mixin({
-                customClass: {
-                    confirmButton: "btn btn-success",
-                    cancelButton: "btn btn-danger",
-                },
-                buttonsStyling: false,
-            });
-    
-            const result = await MySwal.fire({
-                title: "Are you sure?",
-                text: "You want to edit this student",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, continue to edit!",
-                cancelButtonText: "No, cancel!",
-                reverseButtons: true,
-            });
-    
-            if (result.isConfirmed) {
-                const { value: password } = await Swal.fire({
-                    title: "Enter your password",
-                    input: "password",
-                    inputLabel: "Password",
-                    inputPlaceholder: "Enter your password",
-                    inputAttributes: {
-                        maxlength: 10,
-                        autocapitalize: "off",
-                        autocorrect: "off",
-                    },
-                });
-                
-                if (password) {
-                    MySwal.fire({
-                        title: "Update sedang berlangsung",
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        didOpen: async () => {
-                            MySwal.showLoading();
-                            try {
-                                const response = await fetch(`/api/users/${params.studentId}`, {
-                                    method: "POST",
-                                    body: JSON.stringify({
-                                        password,
-                                        phoneNumber: data.phoneNumber,
-                                        name: data.name,
-                                        gender: data.gender,
-                                        address: data.address,
-                                        studentClass: data.studentClass,
-                                        teacher: data.teacher,
-                                    }),
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                });
-                                
-                                if (response.ok) {
-                                    await MySwal.fire({
-                                        title: "Data Berhasil Diperbarui",
-                                        icon: "success",
-                                        timer: 2000,
-                                        showConfirmButton: false,
-                                    });
-                                } else {
-                                    await MySwal.fire({
-                                        title: "Data Gagal Diperbarui",
-                                        icon: "error",
-                                        timer: 2000,
-                                        showConfirmButton: false,
-                                    });
-                                }
-                            } catch (error) {
-                                await MySwal.fire({
-                                    title: "Error updating data",
-                                    icon: "error",
-                                    timer: 2000,
-                                    showConfirmButton: false,
-                                });
-                            } finally {
-                                MySwal.close();
-                            }
-                        },
-                    });
-                }
-                if(!password) {
-                    await MySwal.fire({
-                        title: "Input Your Password",
-                        icon: "error",
-                        timer: 2000,
-                        showConfirmButton: false,
-                    });
-                }
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                MySwal.fire("Cancelled", "Your imaginary file is safe :)", "error");
-            }
-        } catch (error) {
-            console.error("Error in submit:", error);
-            await MySwal.fire({
-                title: error,
-                icon: "error",
-                timer: 2000,
-                showConfirmButton: false,
-            });
-        }
-    };
+		try {
+			MySwal.mixin({
+				customClass: {
+					confirmButton: "btn btn-success",
+					cancelButton: "btn btn-danger",
+				},
+				buttonsStyling: false,
+			});
+
+			const result = await MySwal.fire({
+				title: "Are you sure?",
+				text: "You want to edit this student",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Yes, continue to edit!",
+				cancelButtonText: "No, cancel!",
+				reverseButtons: true,
+			});
+
+			if (result.isConfirmed) {
+				const { value: password } = await Swal.fire({
+					title: "Enter your password",
+					input: "password",
+					inputLabel: "Password",
+					inputPlaceholder: "Enter your password",
+					inputAttributes: {
+						maxlength: 10,
+						autocapitalize: "off",
+						autocorrect: "off",
+					},
+				});
+
+				if (password) {
+					const storageRef = ref(storage, `${data.phoneNumber}${data.name}`);
+					const uploadTask = uploadBytesResumable(storageRef, image);
+					MySwal.fire({
+						title: "Update sedang berlangsung",
+						html: "Progress: <b>0%</b>",
+						allowEscapeKey: false,
+						allowOutsideClick: false,
+						didOpen: () => {
+							MySwal.showLoading();
+							const b = Swal.getHtmlContainer().querySelector("b");
+							uploadTask.on(
+								"state_changed",
+								snapshot => {
+									const progress =
+										(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+									b.innerHTML = `Progress: <b>${Math.round(progress)}%</b>`;
+								},
+								error => {
+									MySwal.fire({
+										title: error,
+										icon: "error",
+										timer: 2000,
+										showConfirmButton: false,
+									});
+								},
+								async () => {
+									try {
+										const downloadURL = await getDownloadURL(
+											uploadTask.snapshot.ref
+										);
+										setData(prev => ({ ...prev, imageURL: downloadURL }));
+
+										const response = await fetch(
+											`/api/users/${params.studentId}`,
+											{
+												method: "POST",
+												body: JSON.stringify({
+													password,
+													phoneNumber: data.phoneNumber,
+													name: data.name,
+													gender: data.gender,
+													address: data.address,
+													studentClass: data.studentClass,
+													teacher: data.teacher,
+													imageURL: downloadURL,
+													imageName: `${data.phoneNumber}${data.name}`,
+												}),
+												headers: {
+													"Content-Type": "application/json",
+												},
+											}
+										);
+
+										if (response.ok) {
+											await MySwal.fire({
+												title: "Data Berhasil Diperbarui",
+												icon: "success",
+												timer: 2000,
+												showConfirmButton: false,
+											});
+										} else {
+											await MySwal.fire({
+												title: "Data Gagal Diperbarui",
+												icon: "error",
+												timer: 2000,
+												showConfirmButton: false,
+											});
+										}
+									} catch (error) {
+										await MySwal.fire({
+											title: "Error updating data",
+											icon: "error",
+											timer: 2000,
+											showConfirmButton: false,
+										});
+									} finally {
+										MySwal.close();
+									}
+								}
+							);
+						},
+					});
+				}
+				if (!password) {
+					await MySwal.fire({
+						title: "Input Your Password",
+						icon: "error",
+						timer: 2000,
+						showConfirmButton: false,
+					});
+				}
+			} else if (result.dismiss === Swal.DismissReason.cancel) {
+				MySwal.fire("Cancelled", "Your imaginary file is safe :)", "error");
+			}
+		} catch (error) {
+			console.error("Error in submit:", error);
+			await MySwal.fire({
+				title: error,
+				icon: "error",
+				timer: 2000,
+				showConfirmButton: false,
+			});
+		}
+	};
 
 	const nameRef = useRef(data.name);
 	const genderRef = useRef(data.gender);
@@ -311,17 +348,17 @@ export default function Page({ params }) {
 						</select>
 					</div>
 					<div className={`${styled.inputBox} group`}>
-						<label htmlFor="select_teacher" className="sr-only">
+					<label htmlFor="select_teacher" className="sr-only">
 							Choose Teacher
 						</label>
 						<select
 							id="select_teacher"
 							ref={teacherRef}
 							className={`${styled.select} peer`}
-							value={data.teacher}
 							onChange={e =>
 								setData(prev => ({ ...prev, teacher: e.target.value }))
-							}>
+							}
+							value={data.teacher}>
 							<option disabled>Choose Teacher</option>
 							<option value="Aimanurrofi">Aimanurrofi</option>
 							<option value="Doyok Nana">Doyok Nana</option>
