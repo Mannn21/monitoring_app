@@ -40,7 +40,7 @@ export const POST = async req => {
 		phoneNumber,
 		address,
 		studentClass,
-		teacher,
+		dateBirthday,
 		password,
 		confPassword,
 	} = await req.json();
@@ -52,6 +52,20 @@ export const POST = async req => {
 				{ status: 404 }
 			);
 		const salt = await bcrypt.genSalt(10);
+		function determineTeacher(studentClass) {
+			switch (studentClass) {
+				case 'Pagi 1':
+					return 'Aimanurrofi';
+				case 'Pagi 2':
+					return 'Joni Herlambang';
+				case 'Siang 1':
+					return 'Lani Maryani'
+				case 'Siang 2':
+					return 'Nisa Marnisa'
+				default:
+					return 'Unknown Teacher';
+			}
+		}
 		const encryptedPassword = await bcrypt.hash(confPassword, salt);
 		const studentData = {
 			name,
@@ -59,10 +73,11 @@ export const POST = async req => {
 			studentId: uuidv4(),
 			phoneNumber,
 			address,
+			birthday: dateBirthday,
 			password: encryptedPassword,
 			class: {
 				studentClass,
-				teacher,
+				teacher: determineTeacher(studentClass),
 			},
 			image: {
 				URL: imageURL,
@@ -76,9 +91,10 @@ export const POST = async req => {
 			gender,
 			phoneNumber,
 			address,
+			birthday: dateBirthday,
 			class: {
 				studentClass,
-				teacher,
+				teacher: determineTeacher(studentClass),
 			},
 			image: {
 				URL: imageURL,

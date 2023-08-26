@@ -36,6 +36,7 @@ export const GET = async (req, context) => {
 		if (user.length >= 1) {
 			const data = {
 				name: user[0].name,
+				birthday: user[0].birthday,
 				gender: user[0].gender,
 				image: {
 					URL: user[0].image.URL
@@ -107,7 +108,7 @@ export const DELETE = async (req, context) => {
 export const POST = async (req, context) => {
 	const { params } = context;
 	const studentId = params.studentId;
-	const { phoneNumber, name, gender, address, studentClass, teacher, password, imageURL, imageName } =
+	const { phoneNumber, name, gender, address, studentClass, dateBirthday, password, imageURL, imageName } =
 		await req.json();
 
 	try {
@@ -147,16 +148,31 @@ export const POST = async (req, context) => {
 						password,
 						user[0].password
 					);
+					function determineTeacher(studentClass) {
+						switch (studentClass) {
+							case 'Pagi 1':
+								return 'Aimanurrofi';
+							case 'Pagi 2':
+								return 'Joni Herlambang';
+							case 'Siang 1':
+								return 'Lani Maryani'
+							case 'Siang 2':
+								return 'Nisa Marnisa'
+							default:
+								return 'Unknown Teacher';
+						}
+					}
 					if (checkPassword) {
 						if (checkPassword) {
 							const updateStudent = doc(db, "students", user[0].id);
 							const student = await updateDoc(updateStudent, {
 								name,
 								gender,
+								birthday: dateBirthday,
 								address,
 								class: {
 									studentClass,
-									teacher
+									teacher: determineTeacher(studentClass)
 								},
 								image: {
 									URL: imageURL,

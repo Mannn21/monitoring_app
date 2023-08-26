@@ -16,7 +16,7 @@ export default function Page({ params }) {
 		name: "",
 		gender: "Choose Gender",
 		studentClass: "Choose Class",
-		teacher: "Choose Teacher",
+		date: "",
 		phoneNumber: "",
 		address: "",
 		imageURL: "",
@@ -24,7 +24,6 @@ export default function Page({ params }) {
 		imageURL: "",
 		imageName: "",
 	});
-
 
 	const getUser = useCallback(async () => {
 		const response = await fetch(`/api/users/${params.studentId}`);
@@ -34,7 +33,7 @@ export default function Page({ params }) {
 			name: datas.data.name,
 			gender: datas.data.gender,
 			studentClass: datas.data.class.studentClass,
-			teacher: datas.data.class.teacher,
+			date: datas.data.birthday,
 			address: datas.data.address,
 			imageURL: datas.data.image.URL,
 			phoneNumber: datas.data.phoneNumber,
@@ -125,7 +124,7 @@ export default function Page({ params }) {
 													gender: data.gender,
 													address: data.address,
 													studentClass: data.studentClass,
-													teacher: data.teacher,
+													dateBirthday: data.date,
 													imageURL: downloadURL,
 													imageName: `${data.phoneNumber}${data.name}`,
 												}),
@@ -190,7 +189,7 @@ export default function Page({ params }) {
 	const nameRef = useRef(data.name);
 	const genderRef = useRef(data.gender);
 	const classRef = useRef(data.studentClass);
-	const teacherRef = useRef(data.teacher);
+	const dateRef = useRef(data.date);
 	const phoneNumberRef = useRef(data.phoneNumber);
 	const addressRef = useRef(data.address);
 	const imageRef = useRef(data.imageURL);
@@ -348,23 +347,24 @@ export default function Page({ params }) {
 						</select>
 					</div>
 					<div className={`${styled.inputBox} group`}>
-					<label htmlFor="select_teacher" className="sr-only">
-							Choose Teacher
-						</label>
-						<select
-							id="select_teacher"
-							ref={teacherRef}
-							className={`${styled.select} peer`}
+						<input
+							type="date"
+							name="date"
+							id="date"
+							className={`${styled.input} peer`}
+							autoComplete="off"
+							ref={dateRef}
+							defaultValue={data.date}
 							onChange={e =>
-								setData(prev => ({ ...prev, teacher: e.target.value }))
+								setData(prev => ({ ...prev, date: e.target.value }))
 							}
-							value={data.teacher}>
-							<option disabled>Choose Teacher</option>
-							<option value="Aimanurrofi">Aimanurrofi</option>
-							<option value="Doyok Nana">Doyok Nana</option>
-							<option value="Ujang Lima">Ujang Lima</option>
-							<option value="Sri Nurwati">Sri Nurwati</option>
-						</select>
+							required
+						/>
+						<label
+							htmlFor="date"
+							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+							Birthday
+						</label>
 					</div>
 				</div>
 				<button onClick={submit} className={styled.button}>

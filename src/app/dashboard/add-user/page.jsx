@@ -20,7 +20,7 @@ export default function AddUser() {
 		name: "",
 		gender: "",
 		studentClass: "",
-		teacher: "",
+		date: "",
 		phoneNumber: "",
 		address: "",
 		password: "",
@@ -32,7 +32,7 @@ export default function AddUser() {
 	const nameRef = useRef();
 	const genderRef = useRef();
 	const classRef = useRef();
-	const teacherRef = useRef();
+	const dateRef = useRef();
 	const phoneNumberRef = useRef();
 	const addressRef = useRef();
 	const passwordRef = useRef();
@@ -104,7 +104,7 @@ export default function AddUser() {
 														name: data.name,
 														gender: data.gender,
 														studentClass: data.studentClass,
-														teacher: data.teacher,
+														dateBirthday: data.date,
 														phoneNumber: data.phoneNumber,
 														address: data.address,
 														password: data.password,
@@ -127,7 +127,7 @@ export default function AddUser() {
 													nameRef.current.value = "";
 													genderRef.current.value = "Choose Gender";
 													classRef.current.value = "Choose Class";
-													teacherRef.current.value = "Choose Teacher";
+													dateRef.current.value = "Choose Date";
 													phoneNumberRef.current.value = "";
 													addressRef.current.value = "";
 													passwordRef.current.value = "";
@@ -149,7 +149,7 @@ export default function AddUser() {
 													icon: "error",
 													timer: 2000,
 													showConfirmButton: false,
-												})
+												});
 											} finally {
 												MySwal.close();
 											}
@@ -326,23 +326,23 @@ export default function AddUser() {
 						</select>
 					</div>
 					<div className={`${styled.inputBox} group`}>
-						<label htmlFor="select_teacher" className="sr-only">
-							Choose Teacher
-						</label>
-						<select
-							id="select_teacher"
-							ref={teacherRef}
-							className={`${styled.select} peer`}
+						<input
+							type="date"
+							name="date"
+							id="date"
+							className={`${styled.input} peer`}
+							autoComplete="off"
+							ref={dateRef}
 							onChange={e =>
-								setData(prev => ({ ...prev, teacher: e.target.value }))
+								setData(prev => ({ ...prev, date: e.target.value }))
 							}
-							defaultValue="Choose Teacher">
-							<option disabled>Choose Teacher</option>
-							<option value="Aimanurrofi">Aimanurrofi</option>
-							<option value="Doyok Nana">Doyok Nana</option>
-							<option value="Ujang Lima">Ujang Lima</option>
-							<option value="Sri Nurwati">Sri Nurwati</option>
-						</select>
+							required
+						/>
+						<label
+							htmlFor="date"
+							className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+							Birthday
+						</label>
 					</div>
 				</div>
 				<div className="w-full grid md:grid-cols-2 md:gap-6">
